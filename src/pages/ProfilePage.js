@@ -1,57 +1,79 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import * as Auth from '@aws-amplify/auth';
-import { Navigate } from 'react-router-dom';
-
-const ProfilePage = ({ signOut, user }) => {
-  const [userInfo, setUserInfo] = useState(null);
-
-  useEffect(() => {
-    if (user) {
-      setUserInfo({
-        name: user.username,
-        email: user.attributes.email,
-        phone: user.attributes.phone_number || 'N/A',
-        createdDate: user.attributes.created_at || 'N/A',
-      });
-    }
-  }, [user]);
-
-  // Redirect user to home page if not logged in
-  if (!user) {
-    return <Navigate to="/" />;
-  }
-
-  return (
-    <Box sx={{ maxWidth: 600, margin: 'auto', padding: 2 }}>
-      <Typography variant="h4" gutterBottom>
-        Profile Page
-      </Typography>
-
-      {userInfo ? (
-        <Box>
-          <Typography variant="h6" gutterBottom>
-            User Info
-          </Typography>
-          <Typography variant="body1">Username: {userInfo.name}</Typography>
-          <Typography variant="body1">Email: {userInfo.email}</Typography>
-          <Typography variant="body1">Phone: {userInfo.phone}</Typography>
-          <Typography variant="body1">Account Created: {userInfo.createdDate}</Typography>
-
-          <Button
-            variant="contained"
-            color="secondary"
-            onClick={signOut}
-            sx={{ marginTop: 2 }}
-          >
-            Sign Out
-          </Button>
-        </Box>
-      ) : (
-        <Typography variant="body1">Loading user information...</Typography>
-      )}
-    </Box>
-  );
+import React, { useState } from 'react';
+import { Box, Typography, TextField, Button } from '@mui/material';
+const ProfilePage = () => {
+ const [formData, setFormData] = useState({
+   name: '',
+   email: '',
+   phone: '',
+   address: '',
+   items: '',
+ });
+ const handleChange = (e) => {
+   setFormData({
+     ...formData,
+     [e.target.name]: e.target.value,
+   });
+ };
+ const handleSubmit = (e) => {
+   e.preventDefault();
+   alert('Donation Form Submitted!');
+ };
+ return (
+<Box>
+<Typography variant="h4" gutterBottom>
+       Donate Your E-Waste
+</Typography>
+<form onSubmit={handleSubmit}>
+<TextField
+         label="Full Name"
+         name="name"
+         value={formData.name}
+         onChange={handleChange}
+         fullWidth
+         required
+         sx={{ mb: 2 }}
+       />
+<TextField
+         label="Email Address"
+         name="email"
+         value={formData.email}
+         onChange={handleChange}
+         fullWidth
+         required
+         sx={{ mb: 2 }}
+       />
+<TextField
+         label="Phone Number"
+         name="phone"
+         value={formData.phone}
+         onChange={handleChange}
+         fullWidth
+         required
+         sx={{ mb: 2 }}
+       />
+<TextField
+         label="Address"
+         name="address"
+         value={formData.address}
+         onChange={handleChange}
+         fullWidth
+         required
+         sx={{ mb: 2 }}
+       />
+<TextField
+         label="Items to Donate"
+         name="items"
+         value={formData.items}
+         onChange={handleChange}
+         fullWidth
+         required
+         sx={{ mb: 2 }}
+       />
+<Button variant="contained" color="primary" type="submit">
+         Submit Donation
+</Button>
+</form>
+</Box>
+ );
 };
-
 export default ProfilePage;

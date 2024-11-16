@@ -3,7 +3,7 @@ const devices = [
    Name: "Mouse",
    weight: 100,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/mouseicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/mouseicon.png",
    materials: {
      aluminum: 7.5,  // average of 5–10g
      copper: 12.5,   // average of 10–15g
@@ -17,7 +17,7 @@ const devices = [
    Name: "Keyboard",
    category:"IT Equipment",
    weight: 500,
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/keyboardicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/keyboardicon.png",
    materials: {
      aluminum: 37.5,  // average of 25–50g
      copper: 37.5,    // average of 25–50g
@@ -30,7 +30,7 @@ const devices = [
    Name: "Routers",
    weight: 300,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/routericon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/routericon.png",
    materials: {
      aluminum: 10,    // average of 5–15g
      copper: 37.5,    // average of 30–45g
@@ -43,7 +43,7 @@ const devices = [
    Name: "Modems",
    weight: 200,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/modemicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/modemicon.png",
    materials: {
      aluminum: 7.5,   // average of 5–10g
      copper: 25,      // average of 20–30g
@@ -56,7 +56,7 @@ const devices = [
    Name: "Computer Desktop (PC)",
    weight: 10000,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/computericon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/computericon.png",
    materials: {
      aluminum: 1250,  // average of 1,000–1,500g
      copper: 1500,    // average of 1,000–2,000g
@@ -69,7 +69,7 @@ const devices = [
    Name: "Speakers",
    weight: 500,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/speakericon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/speakericon.png",
    materials: {
      aluminum: 27.5,  // average of 5–50g
      copper: 75,      // average of 50–100g
@@ -82,7 +82,7 @@ const devices = [
    Name: "Webcam",
    weight: 100,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/webcamicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/webcamicon.png",
    materials: {
      aluminum: 3,     // average of 1–5g
      copper: 12.5,    // average of 10–15g
@@ -95,7 +95,7 @@ const devices = [
    Name: "LCD/LED TVs",
    weight: [5000, 10000],  // Weight range; average can be calculated later
    category: "Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/smart-tv.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/smart-tv.png",
    materials: {
      aluminum: 300,    // average of 200–400g
      copper: 750,      // average of 500–1,000g
@@ -108,7 +108,7 @@ const devices = [
    Name: "Laptops",
    category:"IT Equipment",
    weight: 2000,
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/laptopicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/laptopicon.png",
    materials: {
      aluminum: 200,    // average of 100–300g
      copper: 175,      // average of 100–250g
@@ -121,7 +121,7 @@ const devices = [
    Name: "Mobiles",
    weight: 200,
    category:"Mobile Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/mobileicon.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/mobileicon.png",
    materials: {
      aluminum: 7.5,    // average of 5–10g
      copper: 15,       // average of 10–20g
@@ -134,7 +134,7 @@ const devices = [
    Name: "Mobile Chargers",
    weight: 50,
    category:"Mobile Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/charger.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/charger.png",
    materials: {
      aluminum: 0,
      copper: 12.5,     // average of 10–15g
@@ -147,7 +147,7 @@ const devices = [
    Name: "Power Banks",
    weight: 300,
    category:"Mobile Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/power-bank.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/power-bank.png",
    materials: {
      aluminum: 15,     // average of 10–20g
      copper: 40,       // average of 30–50g
@@ -160,7 +160,7 @@ const devices = [
    Name: "Microwave",
    weight: 15000,
    category: "Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/oven.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/oven.png",
    materials: {
      aluminum: 750,    // average of 500–1,000g
      copper: 1250,     // average of 1,000–1,500g
@@ -173,7 +173,7 @@ const devices = [
    Name: "Oven",
    weight: 25000,
    category: "Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/oven.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/oven.png",
    materials: {
      aluminum: 1250,   // average of 1,000–1,500g
      copper: 1750,     // average of 1,500–2,000g
@@ -186,7 +186,7 @@ const devices = [
    Name: "USBs",
    weight: 30,
    category:"IT Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/usb-drive.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/usb-drive.png",
    materials: {
      aluminum: 0,
      copper: 7.5,      // average of 5–10g
@@ -199,7 +199,7 @@ const devices = [
    Name: "Bulbs (Incandescent/LED)",
    weight: 50,
    category:"Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/light-bulbs.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/light-bulbs.png",
    materials: {
      aluminum: 0,
      copper: 7.5,      // average of 5–10g
@@ -212,7 +212,7 @@ const devices = [
    Name: "Tube Lights",
    weight: 100,
    category:"Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/creative.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/creative.png",
    materials: {
      aluminum: 7.5,    // average of 5–10g
      copper: 12.5,     // average of 10–15g
@@ -225,7 +225,7 @@ const devices = [
    Name: "Remotes",
    weight: 100,
    category: "Home Equipment",
-   image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/remote-control.png",
+   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/remote-control.png",
    materials: {
      aluminum: 3,     // average of 1–5g
      copper: 7.5,     // average of 5–10g
@@ -237,7 +237,7 @@ const devices = [
  {
   Name: "CRT TVs",
   category: "Home Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/television.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/television.png",
   materials: {
     aluminum: 10,   // average of 5–15g (casing and frame)
     copper: 30,     // average of 20–40g (wiring and internal components)
@@ -248,7 +248,7 @@ const devices = [
 {
   Name: "Fridges",
   category: "Home Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/fridge.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/fridge.png",
   materials: {
     aluminum: 500,   // average of 400–600g (in internal components and casing)
     copper: 300,     // average of 200–400g (wiring, condenser coils)
@@ -259,7 +259,7 @@ const devices = [
 {
   Name: "Printers",
   category: "IT Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/printer.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/printer.png",
   materials: {
     aluminum: 50,    // average of 30–70g (in components and casing)
     copper: 100,     // average of 80–150g (wires, circuits)
@@ -271,7 +271,7 @@ const devices = [
 {
   Name: "Wireless Earphones",
   category: "Mobile Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/wireless.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/wireless.png",
   materials: {
     aluminum: 5,      // average of 3–8g (casing or small internal components)
     copper: 10,      // average of 5–15g (internal wiring and circuitry)
@@ -282,7 +282,7 @@ const devices = [
 {
   Name: "Wired Earphones",
   category: "Mobile Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/wired.jpg",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/wired.jpg",
   materials: {
     aluminum: 3,      // average of 1–5g (small parts, casing)
     copper: 15,      // average of 10–20g (wiring)
@@ -293,7 +293,7 @@ const devices = [
 {
   Name: "Bluetooth Earphones",
   category: "Mobile Equipment",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/download.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/download.png",
   materials: {
     aluminum: 5,      // average of 3–8g (small internal parts or casing)
     copper: 10,      // average of 5–15g (internal circuitry, wiring)
@@ -305,7 +305,7 @@ const devices = [
 {
   Name: "Lead-Acid Battery",
   category: "Batteries",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/battery.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {
     aluminum: 0.2,     // average of 1-2%
     copper: 0.3,       // average of 2-3%
@@ -316,7 +316,7 @@ const devices = [
 {
   Name: "Lithium-Ion Battery",
   category: "Batteries",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/battery.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {
     aluminum: 0.12,    // average of 10-15%
     copper: 0.20,      // average of 15-25%
@@ -327,7 +327,7 @@ const devices = [
 {
   Name: "Nickel-Metal Hydride (NiMH) Battery",
   category: "Batteries",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/battery.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {
     aluminum: 0.7,     // average of 5-10%
     copper: 0.12,      // average of 10-15%
@@ -338,7 +338,7 @@ const devices = [
 {
   Name: "Alkaline Battery",
   category: "Batteries",
-  image:"https://amplify-eco-images.s3.us-east-1.amazonaws.com/icons/battery.png",
+  image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {
     aluminum: 0.3,     // average of 3-5%
     copper: 0.7,       // average of 5-10%

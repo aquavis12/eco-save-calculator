@@ -1,6 +1,11 @@
-# Getting Started with Create React App
+---
+# E-Waste Calculator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is an **E-Waste Calculator** built using [Create React App](https://github.com/facebook/create-react-app). The app helps users estimate the impact of their electronic waste, encouraging sustainable disposal practices.
+
+## Overview
+
+-The E-Waste Calculator leverages React for dynamic user interfaces and Material UI Icons for a modern design. It features a Slider component to input data and uses AWS Amplify Gen2 for backend services like authentication, API, and data storage.
 
 ## Available Scripts
 
@@ -8,36 +13,72 @@ In the project directory, you can run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+Runs the app in development mode.  
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
+The page will reload when you make changes.  
 You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `build` folder.  
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
-The build is minified and the filenames include the hashes.\
+The build is minified, and the filenames include hashes.  
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+## Technologies Used
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **React**: Front-end library for building the user interface.
+- **Material UI Icons**: Provides a rich set of icons to enhance the UI.
+- **Slider**: A UI component for smooth input controls.
+- **AWS Amplify Gen2**: Used for backend services, including authentication, API management, and data storage.
+- **Chart.js & React Chart.js**: Libraries used for rendering charts in the app.
+- **React Slick**: Used for creating sliders or carousels.
+- **Google Maps API**: Integrated using `@react-google-maps/api` for map functionalities.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+To set up the project, you need to install the following packages:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```bash
+# Material UI and related dependencies
+npm install @mui/material @emotion/react @emotion/styled
+
+# React Router for navigation
+npm install react-router-dom
+
+# Charting libraries
+npm install chart.js react-chartjs-2
+
+# AWS Amplify for backend integration
+npm install aws-amplify @aws-amplify/ui-react
+
+# React Slick for carousels
+npm install react-slick slick-carousel
+
+# Material UI Icons for UI enhancement
+npm install @mui/icons-material
+
+# Google Maps API integration
+npm install @react-google-maps/api
+
+# Development dependencies
+npm install source-map-loader --save-dev
+npm install react-scripts --save-dev
+npm install @babel/plugin-proposal-private-property-in-object --save-dev
+
+# Web Vitals for performance monitoring
+npm install web-vitals --save
+
+# TypeScript setup
+npm install typescript@4.9.5 --save-dev
+
+# Create the latest AWS Amplify project
+npm create amplify@latest
+```
 
 ## Learn More
 
@@ -45,26 +86,12 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+## Additional Resources
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- [Material UI](https://mui.com/) for design components.
+- [AWS Amplify Documentation](https://docs.amplify.aws/) for backend setup and integration.
+- [Chart.js Documentation](https://www.chartjs.org/docs/latest/) for creating charts.
+- [React Slick Documentation](https://react-slick.neostack.com/) for building carousels.
+- [Google Maps API Documentation](https://developers.google.com/maps/documentation) for integrating maps.
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---

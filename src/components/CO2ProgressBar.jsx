@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography} from '@mui/material';
-import CO2ProgressBar from '../components/CO2ProgressBar'; // Assuming CO2 progress bar component is available
+import CO2ProgressBar from './CO2ProgressBar.jsx'; // Assuming CO2 progress bar component is available
 import devices from '../data/devicesData.js'; // Device data
 
 const CO2ProgressPage = ({ quantities }) => {

@@ -68,7 +68,7 @@ const HomePage = () => {
       {/* Image Section */}
       <Box sx={{ mb: 6, textAlign: 'center' }}>
         <img
-          src="https://amplify-eco-images.s3.us-east-1.amazonaws.com/image1.jpg" // Replace with the correct image URL or local path
+          src="https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/image1.jpg" // Replace with the correct image URL or local path
           alt="Electronics"
           style={{
             width: '50%',

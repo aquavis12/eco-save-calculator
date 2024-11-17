@@ -35,7 +35,7 @@ const devices = [
      aluminum: 10,    // average of 5–15g
      copper: 37.5,    // average of 30–45g
      lead: 0,
-     plastic: 215     // average of 200–230g
+     plastic: 580    // average of 200–230g
    },
    notes: "Aluminum or plastic casing, copper in wiring and internal circuitry."
  },
@@ -110,8 +110,8 @@ const devices = [
    weight: 2000,
    image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/laptopicon.png",
    materials: {
-     aluminum: 200,    // average of 100–300g
-     copper: 175,      // average of 100–250g
+     aluminum: 680,    // average of 100–300g
+     copper: 122,      // average of 100–250g
      lead: 0,
      plastic: 1650     // average of 1,500–1,800g
    },
@@ -242,7 +242,7 @@ const devices = [
     aluminum: 10,   // average of 5–15g (casing and frame)
     copper: 30,     // average of 20–40g (wiring and internal components)
     lead: 200,      // average of 150–250g (typically in glass and components)
-    plastic: 200    // average of 150–250g (casing and external parts)
+    plastic: 1000   // average of 150–250g (casing and external parts)
   }
 },
 {
@@ -276,7 +276,7 @@ const devices = [
     aluminum: 5,      // average of 3–8g (casing or small internal components)
     copper: 10,      // average of 5–15g (internal wiring and circuitry)
     lead: 0,         // minimal or none in wireless versions
-    plastic: 40      // average of 30–50g (body, earbuds, buttons)
+    plastic: 35      // average of 30–50g (body, earbuds, buttons)
   }
 },
 {
@@ -287,7 +287,7 @@ const devices = [
     aluminum: 3,      // average of 1–5g (small parts, casing)
     copper: 15,      // average of 10–20g (wiring)
     lead: 0,         // no lead in typical wired earphones
-    plastic: 30      // average of 25–35g (earbuds, casing, buttons)
+    plastic: 40     // average of 25–35g (earbuds, casing, buttons)
   }
 },
 {
@@ -298,7 +298,7 @@ const devices = [
     aluminum: 5,      // average of 3–8g (small internal parts or casing)
     copper: 10,      // average of 5–15g (internal circuitry, wiring)
     lead: 0,         // minimal or none in Bluetooth versions
-    plastic: 45      // average of 35–50g (body, earbuds, controls)
+    plastic: 50     // average of 35–50g (body, earbuds, controls)
   }
 },
 
@@ -318,7 +318,7 @@ const devices = [
   category: "Batteries",
   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {
-    aluminum: 0.12,    // average of 10-15%
+    aluminum: 1.2,    // average of 10-15%
     copper: 0.20,      // average of 15-25%
     lead: 0,         // no lead in lithium-ion batteries
     plastic: 0.68      // remainder in plastic casing, separators

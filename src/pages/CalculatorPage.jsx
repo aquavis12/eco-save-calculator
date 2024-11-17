@@ -3,7 +3,7 @@ import { Box, Typography, Card, CardContent, IconButton, TextField, Divider, Gri
 import devices from '../data/devicesData.js'; // Assuming device data is imported
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
-
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const CalculatorPage = () => {
   const [quantities, setQuantities] = useState(devices.reduce((acc, device) => {
@@ -11,6 +11,9 @@ const CalculatorPage = () => {
     return acc;
   }, {}));
 
+  const navigate = useNavigate(); // Initialize navigate function
+
+  // Assuming this is in the same component where quantities are managed
   const handleQuantityChange = (deviceName, change) => {
     const newQuantity = Math.max(0, quantities[deviceName] + change); // Prevent negative values
     setQuantities({
@@ -28,6 +31,12 @@ const CalculatorPage = () => {
       });
     }
   };
+
+  // Function to navigate and pass quantities to the CO2ProgressPage
+  const handleRecycleClick = () => {
+    navigate('/co2progress', { state: { quantities } }); // Pass quantities via state
+  };
+
   // Define category colors
   const categoryColors = {
     'IT Equipment': '#ADD8E6', // Light Blue
@@ -155,19 +164,21 @@ const CalculatorPage = () => {
       })}
 
       {/* Total CO2, Weight, and Material Breakdown */}
-      <Box sx={{ mt: 4, textAlign: 'center', }}>
+      <Box sx={{ mt: 4, textAlign: 'center' }}>
         {/* Confirm and Get Coupons Button */}
         <Button
           variant="contained"
           color="secondary"
           sx={{
-            marginTop: 3,
-            padding: '10px 20px',
-            borderRadius: '10px',
+            padding: '12px 30px',
+            fontSize: '1.2rem',
             fontWeight: 'bold',
-            fontSize: '25px',
-            '&:hover': { backgroundColor: '#00897B' },
+            borderRadius: '30px',
+            backgroundColor: '#2ecc71',
+            '&:hover': { backgroundColor: '#54b1c9' },
+            boxShadow: 3,
           }}
+          onClick={handleRecycleClick} // Use handleRecycleClick function here
         >
           Let's Recycle
         </Button>

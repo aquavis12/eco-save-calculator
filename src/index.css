@@ -22,17 +22,8 @@ code {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0rem;
-
 }
 
-
-.card {
-  padding: 0em;
-}
 
 .read-the-docs {
   color: #888;
@@ -47,3 +38,4 @@ code {
 .box:nth-child(3n + 3) {
   grid-column: 3;
 }
+

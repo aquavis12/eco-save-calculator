@@ -23,7 +23,7 @@ const App = () => {
     <Router>
       <CssBaseline />
       <Header />
-      <Container maxWidth="lg" sx={{ marginTop: 0 }}>
+      <Container maxWidth={false}>
         <Routes>
           {/* Public routes */}
           <Route path="/" element={<HomePage />} />

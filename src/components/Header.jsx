@@ -40,7 +40,7 @@ const Header = () => {
             src="https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/image3.jpg" // Replace with the correct image URL or local path
             alt="Electronics"
             style={{
-              width: isMobile ? '40%' : isTablet ? '45%' : '50%', // Adjust for mobile, tablet, desktop
+              width: isMobile ? '20%' : isTablet ? '25%' : '30%', // Adjust for mobile, tablet, desktop
               height: 'auto',
               alignItems: 'center',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom'; // Correct import for v6
 import { Box, Typography, Card, CardContent, Grid, Button } from '@mui/material';
 import devices from '../data/devicesData.js'; // Device data
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 // Material Symbols (using emojis or icons as placeholder)
 const symbols = {
@@ -13,7 +14,8 @@ const symbols = {
 
 const CO2ProgressPage = () => {
   const location = useLocation();
-  const { quantities } = location.state || {}; // Access quantities passed from the previous page
+  const navigate = useNavigate(); // Initialize the navigate function here
+  const { quantities } = location.state || {};
 
   useEffect(() => {
     if (quantities) {
@@ -53,7 +55,27 @@ const CO2ProgressPage = () => {
   const ecoPoints = Math.floor((totalWeight / 1000) * 100);
 
   const handleFindCollectors = () => {
-    alert("Finding nearest e-waste collectors...");
+    const selectedDevices = Object.entries(quantities)
+    .filter(([deviceName, quantity]) => quantity > 0) // Only include devices with quantities > 0
+    .reduce((acc, [deviceName, quantity]) => {
+      acc[deviceName] = quantity; // Build a new object with selected devices
+      return acc;
+    }, {});
+
+    // Pass quantities and totals to the next page as state
+    navigate('/E-Points', {
+      state: {
+        quantities: selectedDevices,
+        totals: {
+          totalWeight,
+          totalLeadWeight,
+          totalPlasticWeight,
+          totalCopperWeight,
+          totalAluminumWeight,
+          ecoPoints,
+        },
+      },
+    });
   };
 
   return (
@@ -62,7 +84,7 @@ const CO2ProgressPage = () => {
         <Grid item xs={12} md={10} lg={8}>
           <Card sx={{ maxWidth: '100%', padding: '20px' }}>
             <CardContent>
-              <Typography variant="h3" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: '20px' , color:"green" }}>
+              <Typography variant="h3" gutterBottom align="center" sx={{ fontWeight: 'bold', marginBottom: '20px', color:"green" }}>
                 Recycling Progress
               </Typography>
 
@@ -70,13 +92,30 @@ const CO2ProgressPage = () => {
                 You collected a total of {totalWeight.toFixed(0)} g of e-waste.
               </Typography>
 
-              <Grid container spacing={2} justifyContent="center">
+              {/* Selected Devices Card */}
+              <Card sx={{ backgroundColor: "#e0f7fa", padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                <Typography variant="h6" gutterBottom sx={{ fontWeight: 'bold' }}>
+                  Selected Devices and Quantities:
+                </Typography>
+                <ul>
+                  {Object.entries(quantities)
+                    .filter(([, quantity]) => quantity > 0) // Only include devices with quantities > 0
+                    .map(([deviceName, quantity]) => (
+                      <li key={deviceName}>
+                        <Typography variant="body1">
+                          {deviceName}: {quantity} units
+                        </Typography>
+                      </li>
+                    ))}
+                </ul>
+              </Card>
 
+              <Grid container spacing={2} justifyContent="center">
+                {/* Material-specific cards */}
+                {/* Lead */}
                 <Grid item xs={12} md={6} lg={4}>
                   <Card sx={{ backgroundColor: "#ffeb3b", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">
-                      Lead
-                    </Typography>
+                    <Typography variant="h5" component="div">Lead</Typography>
                     <Card sx={{ backgroundColor: '#333', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
                       <Typography variant="h4">Pb</Typography>
                     </Card>
@@ -86,11 +125,10 @@ const CO2ProgressPage = () => {
                   </Card>
                 </Grid>
 
+                {/* Plastic */}
                 <Grid item xs={12} md={6} lg={4}>
                   <Card sx={{ backgroundColor: "#c8e6c9", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">
-                      Plastic
-                    </Typography>
+                    <Typography variant="h5" component="div">Plastic</Typography>
                     <Card sx={{ backgroundColor: '#4caf50', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
                       <Typography variant="h4">{symbols.plastic}</Typography>
                     </Card>
@@ -100,25 +138,23 @@ const CO2ProgressPage = () => {
                   </Card>
                 </Grid>
 
+                {/* Copper */}
                 <Grid item xs={12} md={6} lg={4}>
                   <Card sx={{ backgroundColor: "#ffcc80", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">
-                      Copper
-                    </Typography>
+                    <Typography variant="h5" component="div">Copper</Typography>
                     <Card sx={{ backgroundColor: '#8b4513', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
                       <Typography variant="h4">Cu</Typography>
                     </Card>
-                    <Typography variant="body2" color="text.secondary" fontSize='30px '>
+                    <Typography variant="body2" color="text.secondary" fontSize='30px'>
                       {totalCopperWeight.toFixed(0)} g
                     </Typography>
                   </Card>
                 </Grid>
 
+                {/* Aluminum */}
                 <Grid item xs={12} md={6} lg={4}>
                   <Card sx={{ backgroundColor: "#bbdefb", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">
-                      Aluminum
-                    </Typography>
+                    <Typography variant="h5" component="div">Aluminum</Typography>
                     <Card sx={{ backgroundColor: '#1976d2', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
                       <Typography variant="h4">Al</Typography>
                     </Card>
@@ -130,13 +166,13 @@ const CO2ProgressPage = () => {
               </Grid>
 
               <Box sx={{ marginTop: '30px', textAlign: 'center' }}>
-                <Typography variant="h5" sx={{ fontWeight: 'bold', color:"green", fontSize:"40px" }}>
+                <Typography variant="h5" sx={{ fontWeight: 'bold', color: "green", fontSize: "40px" }}>
                   Eco Points Earned
                 </Typography>
                 <Typography variant="body1" fontSize="25px">
                   You have earned {ecoPoints} eco points for your recycling efforts.
                 </Typography>
-                <Typography variant="body2" sx={{ marginTop: '10px',fontSize:"25px" , color:"greenyellow",fontWeight: 'bold'}}>
+                <Typography variant="body2" sx={{ marginTop: '10px', fontSize: "25px", color: "greenyellow", fontWeight: 'bold' }}>
                   Once you reach 1000 eco points, you can win exciting vouchers!
                 </Typography>
               </Box>
@@ -154,9 +190,9 @@ const CO2ProgressPage = () => {
                     '&:hover': { backgroundColor: '#54b1c9' },
                     boxShadow: 3,
                   }}
-                   onClick={handleFindCollectors}
+                  onClick={handleFindCollectors}
                 >
-                  Procced Now
+                  Proceed Now
                 </Button>
               </Box>
             </CardContent>

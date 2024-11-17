@@ -137,7 +137,7 @@ const CO2ProgressPage = () => {
                   You have earned {ecoPoints} eco points for your recycling efforts.
                 </Typography>
                 <Typography variant="body2" sx={{ marginTop: '10px',fontSize:"25px" , color:"greenyellow",fontWeight: 'bold'}}>
-                  Once you reach 1000 eco points, you can redeem a voucher worth $50!
+                  Once you reach 1000 eco points, you can win exciting vouchers!
                 </Typography>
               </Box>
 

@@ -1,155 +1,160 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Grid, Paper, IconButton, TextField, Button } from '@mui/material';
-import { GoogleMap, LoadScript, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import AddIcon from '@mui/icons-material/Add';
-import RemoveIcon from '@mui/icons-material/Remove';
-import { useLocation } from 'react-router-dom'; // to get user's location
-import devices from '../data/devicesData'; // Your devices data
+import { Box, Typography, Grid, TextField, Button, Card, CardContent } from '@mui/material';
+import { GoogleMap, Marker } from '@react-google-maps/api';
+import GoogleMapsLoader from '../GoogleMapsLoader'; // Import the new loader
 
 const NavigatePage = () => {
-  const [quantities, setQuantities] = useState(devices.reduce((acc, device) => {
-    acc[device.Name] = 0;
-    return acc;
-  }, {}));
-  
-  const [collectors, setCollectors] = useState([]); // State for storing nearby e-waste collectors
-  const [selectedDevice, setSelectedDevice] = useState(null);
   const [userLocation, setUserLocation] = useState(null);
-  
-  // Google Maps API and Geolocation Setup
-  const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: 'YOUR_GOOGLE_MAPS_API_KEY', // Add your API key here
-    libraries: ['places'], // Include places library for geolocation
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phoneNumber: '',
+    address: '',
+    city: '',
+    state: ''
   });
-  
+
   // Getting user's geolocation using browser API
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
         const { latitude, longitude } = position.coords;
         setUserLocation({ lat: latitude, lng: longitude });
-        findNearbyCollectors(latitude, longitude); // Fetch nearby collectors
       });
     }
   }, []);
-  
-  const findNearbyCollectors = (latitude, longitude) => {
-    // Example: You would call a backend service to fetch nearby e-waste collectors
-    // For now, we'll use static data for nearby collectors
-    const nearbyCollectors = [
-      { name: 'Collector 1', lat: latitude + 0.01, lng: longitude + 0.01 },
-      { name: 'Collector 2', lat: latitude - 0.01, lng: longitude - 0.01 },
-    ];
-    setCollectors(nearbyCollectors);
-  };
 
-  const handleQuantityChange = (deviceName, change) => {
-    const newQuantity = Math.max(0, quantities[deviceName] + change); // Prevent negative values
-    setQuantities({
-      ...quantities,
-      [deviceName]: newQuantity,
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
     });
-
-    // Set the selected device when quantity is updated
-    if (newQuantity > 0) {
-      setSelectedDevice(deviceName);
-    } else {
-      setSelectedDevice(null); // Deselect if quantity becomes 0
-    }
   };
 
-  const calculateTotal = () => {
-    let totalWeight = 0;
-    let totalCO2 = 0;
-    devices.forEach((device) => {
-      const deviceQuantity = quantities[device.Name];
-      const deviceWeight = device.weight * deviceQuantity / 1000; // Convert to kg
-      totalWeight += deviceWeight;
-      totalCO2 += deviceWeight * 0.9; // CO2 savings per kg
-    });
-    return { totalWeight, totalCO2 };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log('Form data submitted:', formData);
   };
-
-  const { totalWeight, totalCO2 } = calculateTotal();
 
   return (
-    <Box sx={{ padding: 3 }}>
-      <Typography variant="h4" gutterBottom align="center" sx={{ fontWeight: 'bold' }}>
-        E-Waste Recycling Calculator
-      </Typography>
-
-      {/* Map and Collectors Section */}
-      <Box sx={{ marginBottom: 4 }}>
-        <Typography variant="h5" gutterBottom align="center">
-          Find Nearby E-Waste Collectors
-        </Typography>
-        {isLoaded && userLocation && (
-          <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
+    <GoogleMapsLoader>
+      <Box sx={{ padding: 4, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
+      
+        {/* Map Section */}
+        <Box sx={{ marginBottom: 4 }}>
+          <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#333' }}>
+            Find Nearby E-Waste Collectors
+          </Typography>
+          {userLocation && (
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '400px' }}
+              mapContainerStyle={{ width: '100%', height: '400px', borderRadius: '8px' }}
               center={userLocation}
               zoom={14}
             >
-              {/* Display user's location */}
               <Marker position={userLocation} label="You" />
-              
-              {/* Display nearby e-waste collectors */}
-              {collectors.map((collector, index) => (
-                <Marker key={index} position={{ lat: collector.lat, lng: collector.lng }} label={collector.name}>
-                  <InfoWindow>
-                    <Typography variant="body2">{collector.name}</Typography>
-                  </InfoWindow>
-                </Marker>
-              ))}
             </GoogleMap>
-          </LoadScript>
-        )}
-      </Box>
+          )}
+        </Box>
 
-      {/* Device Quantity Section */}
-      <Typography variant="h6" gutterBottom>
-        Select Devices for Recycling
-      </Typography>
-      <Grid container spacing={3} justifyContent="center">
-        {devices.map((device) => (
-          <Grid item xs={12} sm={6} md={3} key={device.Name}>
-            <Paper sx={{ padding: 3, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="h6" align="center" sx={{ marginBottom: 2, fontWeight: 'bold' }}>
-                {device.Name}
-              </Typography>
-              <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <IconButton onClick={() => handleQuantityChange(device.Name, -1)} sx={{ backgroundColor: 'white', borderRadius: '50%' }}>
-                  <RemoveIcon />
-                </IconButton>
-                <TextField
-                  value={quantities[device.Name]}
-                  onChange={(e) => handleQuantityChange(device.Name, parseInt(e.target.value) || 0)}
-                  variant="outlined"
-                  size="small"
-                  sx={{ width: 60, textAlign: 'center' }}
-                />
-                <IconButton onClick={() => handleQuantityChange(device.Name, 1)} sx={{ backgroundColor: 'white', borderRadius: '50%' }}>
-                  <AddIcon />
-                </IconButton>
+        {/* User Information Form */}
+        <Card sx={{ maxWidth: '100%', padding: 4, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 3 }}>
+          <CardContent>
+            <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '24px' }}>
+              Your Information
+            </Typography>
+
+            <form onSubmit={handleSubmit}>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Full Name"
+                    variant="outlined"
+                    fullWidth
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Email"
+                    variant="outlined"
+                    fullWidth
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="Phone Number"
+                    variant="outlined"
+                    fullWidth
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Address"
+                    variant="outlined"
+                    fullWidth
+                    name="address"
+                    value={formData.address}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="City"
+                    variant="outlined"
+                    fullWidth
+                    name="city"
+                    value={formData.city}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="State"
+                    variant="outlined"
+                    fullWidth
+                    name="state"
+                    value={formData.state}
+                    onChange={handleInputChange}
+                    required
+                    sx={{ backgroundColor: '#f7f7f7' }}
+                  />
+                </Grid>
+              </Grid>
+
+              <Box sx={{ mt: 3, textAlign: 'center' }}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  sx={{ borderRadius: '30px', padding: '12px 30px', fontWeight: 'bold' }}
+                >
+                  Submit
+                </Button>
               </Box>
-            </Paper>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Total CO2 and Weight */}
-      <Box sx={{ mt: 4, textAlign: 'center' }}>
-        <Typography variant="h6">
-          Total E-Waste Collected: {totalWeight.toFixed(2)} kg
-        </Typography>
-        <Typography variant="h6">
-          CO2 Saved: {totalCO2.toFixed(2)} kg
-        </Typography>
-        <Button variant="contained" color="primary" sx={{ marginTop: 3 }}>
-          Confirm and Get Coupons
-        </Button>
+            </form>
+          </CardContent>
+        </Card>
       </Box>
-    </Box>
+    </GoogleMapsLoader>
   );
 };
 

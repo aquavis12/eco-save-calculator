@@ -56,10 +56,10 @@ const HomePage = () => {
         <Typography variant="h4" sx={{ color: '#34495e', fontWeight: 'bold', mb: 3 }}>
           Find all those electronics that you don’t use anymore.
         </Typography>
-        <Card sx={{ Width:600, height:100, margin: '0 auto', backgroundColor: '#7edecd' }}>
+        <Card sx={{ Width:200, height:50, backgroundColor: '#7edecd' }}>
           <CardContent>
-            <Typography sx={{ color: '#7f8c8d', fontSize: '1.5rem' }}>
-              Collect your old electronics, and start contributing to a cleaner environment today. By recycling, you're not only saving the planet, but you're also earning rewards!
+            <Typography sx={{ color: '#7f8c8d', fontSize: '1.4rem' }}>
+              Collect your old electronics, and start contributing to a cleaner environment today.
             </Typography>
           </CardContent>
         </Card>
@@ -87,7 +87,8 @@ const HomePage = () => {
         <Card sx={{ maxWidth: 600, margin: '0 auto', backgroundColor: '#7edecd' }}>
           <CardContent>
             <Typography sx={{ color: '#7f8c8d', lineHeight: 1.8, fontSize: '1.2rem' }}>
-              For every 50 kg of e-waste recycled, you’ll receive Coupons worth 50 USD! Start recycling today and earn rewards for your efforts in protecting the environment.
+              For Every 1000 eco points , you’ll receive exciting Coupons ! 
+              Start recycling today and earn rewards for your efforts in protecting the environment.
             </Typography>
           </CardContent>
           <CardActions sx={{ justifyContent: 'center', pb: 2 }}>

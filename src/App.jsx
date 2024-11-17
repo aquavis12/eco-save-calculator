@@ -4,6 +4,7 @@ import { Container, CssBaseline } from '@mui/material';
 import HomePage from './pages/HomePage';
 import CalculatorPage from './pages/CalculatorPage';
 import AboutPage from './pages/AboutPage';
+import NavigatePage  from './pages/NavigatePage.jsx'
 import CO2ProgressPage from './pages/CO2ProgressPage.jsx';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -38,6 +39,7 @@ const App = () => {
             path="/CO2Progress"
             element={<CO2ProgressPage quantities={quantities} />}
           />
+          <Route path="/E-Points" element={<NavigatePage />}/>
         </Routes>
       </Container>
       <Footer />

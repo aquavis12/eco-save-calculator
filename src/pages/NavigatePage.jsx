@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Typography, Grid, TextField, Button, Card, CardContent } from '@mui/material';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker } from '@react-google-maps/api';
-import { useLocation } from 'react-router-dom'; // For location state (quantities, totals, ecoPoints)
 import GoogleMapsLoader from '../GoogleMapsLoader'; // Import the new loader
+import { generateClient } from "aws-amplify/data";
 
-// Define libraries outside the component to avoid re-rendering issues
+const client = generateClient();
+
 const googleMapsLibraries = ['places'];
 
 const NavigatePage = () => {
@@ -15,12 +17,21 @@ const NavigatePage = () => {
     phoneNumber: '',
     address: '',
     city: '',
-    state: ''
+    state: '',
+    selectedDevices: '', // Default to empty object
+    updatedQuantities:0,
+    totalWeight: 0,
+    totalLeadWeight: 0,
+    totalPlasticWeight: 0,
+    totalCopperWeight: 0,
+    totalAluminumWeight: 0,
+    ecoPoints: 0,
   });
   const location = useLocation();
-  const { quantities, totals, ecoPoints } = location.state || {}; // Destructure ecoPoints from location state
+  const navigate = useNavigate();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Getting user's geolocation using browser API
+  // Get user's geolocation
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -30,13 +41,35 @@ const NavigatePage = () => {
     }
   }, []);
 
+  
+
+  // Extract props from location state with defaults if state is missing
+  const {
+    selectedDevices = '',
+    updatedQuantities=0,
+    totalWeight = 0,
+    totalLeadWeight = 0,
+    totalPlasticWeight = 0,
+    totalCopperWeight = 0,
+    totalAluminumWeight = 0,
+    ecoPoints = 0,
+  } = location.state || {}; // Fallback to empty object if location state is undefined
+
   useEffect(() => {
-    if (quantities && totals) {
-      console.log('Quantities:', quantities);
-      console.log('Totals:', totals);
-      console.log('Eco Points:', ecoPoints); // Log ecoPoints for debugging
+    // Log details for debugging purposes
+    if (updatedQuantities) console.log('Quantities:', updatedQuantities);
+    if (selectedDevices) console.log('Selected Devices:', selectedDevices);
+    if (totalWeight || totalLeadWeight || totalPlasticWeight || totalCopperWeight || totalAluminumWeight) {
+      console.log('Total Weights:', {
+        totalWeight,
+        totalLeadWeight,
+        totalPlasticWeight,
+        totalCopperWeight,
+        totalAluminumWeight,
+      });
     }
-  }, [quantities, totals, ecoPoints]);
+    console.log('Eco Points:', ecoPoints);
+  }, [updatedQuantities, selectedDevices, totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight, ecoPoints]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -46,66 +79,131 @@ const NavigatePage = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const quantities = Object.entries(updatedQuantities).map(([device, quantity]) => ({
+    device,
+    quantity,
+  }));
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     console.log('Form data submitted:', formData);
+  
+      try {
+        const { data: existingSubmission } = await client.models.FormSubmission.get({
+          email: formData.email,
+          phoneNumber: formData.phoneNumber,
+        });
+      
+        if (existingSubmission) {
+          // If a matching submission exists, update ecoPoints
+          const existingEcoPoints = existingSubmission.ecoPoints || 0;
+          const updatedEcoPoints = existingEcoPoints + ecoPoints;
+      
+          // Update the submission with new ecoPoints
+          await client.models.FormSubmission.update({
+            email: formData.email,
+          phoneNumber: formData.phoneNumber,
+            ecoPoints: updatedEcoPoints,
+            timestamp: new Date().toISOString(),
+          });
+      
+          console.log('Form data updated with new ecoPoints:', updatedEcoPoints);
+          alert('Your details have been updated successfully.');}
+      else {
+      // Create a new form submission
+      await client.models.FormSubmission.create({
+        name: formData.name,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        ecoPoints: ecoPoints, // Ensure this is the correct field name in the schema
+        timestamp: new Date().toISOString(),
+      });
+  
+      console.log('Form data saved:', { formData });
+      alert('Your details have been submitted successfully.');
+    }
+    } catch (error) {
+      console.error('Error saving data:', error);
+      alert('There was an error submitting your form.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <GoogleMapsLoader libraries={googleMapsLibraries}> {/* Pass the static libraries prop here */}
-      <Box sx={{ padding: 4, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
-        <Box sx={{ }}>
-          {/* Conditionally render the entire section */}
-          {quantities && totals && (
-            <Box sx={{ marginBottom: 4 }}>
-              <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#333' }}>
-                E-Waste Quantities and Totals
-              </Typography>
+    <GoogleMapsLoader libraries={googleMapsLibraries}>
+<Box sx={{ padding: 4, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
+<Box sx={{ }}>
+  {/* Conditionally render the entire Selected Quantities and Total Weights section */}
+  {updatedQuantities && selectedDevices && (
+    <Box sx={{ marginBottom: 4 }}>
+      <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#333' }}>
+        E-Waste Quantities and Totals
+      </Typography>
 
-              <Box sx={{ padding: 2, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 3 }}>
-                <Typography variant="h6" sx={{ marginBottom: 2 }}>Selected Quantities</Typography>
-                <Grid container spacing={2}>
-                  {Object.entries(quantities).map(([device, quantity]) => (
-                    <Grid item xs={12} sm={6} key={device}>
-                      <Typography variant="body1">
-                        {device}: {quantity}
-                      </Typography>
-                    </Grid>
-                  ))}
-                </Grid>
-
-                <Typography variant="h6" sx={{ marginTop: 4, marginBottom: 2 }}>Total Weights</Typography>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Total Weight: {totals.totalWeight} g</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Lead: {totals.totalLeadWeight} g</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Plastic: {totals.totalPlasticWeight} g</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Copper: {totals.totalCopperWeight} g</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Aluminum: {totals.totalAluminumWeight} g</Typography>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Typography variant="body1">Eco Points Earned: {totals.ecoPoints}</Typography>
-                  </Grid>
-                </Grid>
-
-                {/* Display ecoPoints from the location state */}
-                {ecoPoints && (
-                  <Typography variant="h6" sx={{ marginTop: 4, marginBottom: 2 }}>
-                    Eco Points from CO2 Progress Page: {ecoPoints} g
+      {/* Parent Box wrapping both Selected Quantities and Total Weights */}
+      <Box sx={{ padding: 2, backgroundColor: '#f4f6f8', borderRadius: '8px', boxShadow: 3, marginTop: 4 }}>
+        
+        {/* Selected Quantities Section */}
+        <Box sx={{ marginBottom: 4 }}>
+          <Typography variant="h5"sx={{ marginBottom: 2 , fontWeight: 'bold',}}>Selected Quantities</Typography>
+          <Grid container spacing={2}>
+            {Object.entries(updatedQuantities)
+              .filter(([device, quantity]) => quantity > 0) // Only include devices with non-zero quantities
+              .map(([device, quantity]) => (
+                <Grid item xs={12} sm={6} key={device}>
+                  <Typography variant="body1">
+                    {device}: {quantity}
                   </Typography>
-                )}
-              </Box>
-            </Box>
-          )}
+                </Grid>
+              ))}
+          </Grid>
         </Box>
+
+        {/* Total Weights Section */}
+        {(totalWeight || totalLeadWeight || totalPlasticWeight || totalCopperWeight || totalAluminumWeight || ecoPoints) > 0 && (
+          <Box sx={{ paddingTop: 2 }}>
+            <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#333'}}>
+              Total Weights
+            </Typography>
+            <Grid container spacing={2}>
+              {totalWeight > 0 && (
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Total Weight: {totalWeight} g</Typography>
+                </Grid>
+              )}
+              {totalLeadWeight > 0 && (
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Lead: {totalLeadWeight} g</Typography>
+                </Grid>
+              )}
+              {totalPlasticWeight > 0 && (
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Plastic: {totalPlasticWeight} g</Typography>
+                </Grid>
+              )}
+              {totalCopperWeight > 0 && (
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Copper: {totalCopperWeight} g</Typography>
+                </Grid>
+              )}
+              {totalAluminumWeight > 0 && (
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Aluminum: {totalAluminumWeight} g</Typography>
+                </Grid>
+              )}
+                <Grid item xs={12} sm={6}>
+                  <Typography variant="body1">Eco Points Earned: {ecoPoints}</Typography>
+                </Grid>
+            </Grid>
+          </Box>
+        )}
+      </Box>
+    </Box>
+  )}
 
         {/* Map Section */}
         <Box sx={{ marginBottom: 4 }}>
@@ -123,102 +221,97 @@ const NavigatePage = () => {
           )}
         </Box>
 
-        {/* User Information Form */}
-        <Card sx={{ maxWidth: '100%', padding: 4, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 3 }}>
-          <CardContent>
-            <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '24px' }}>
-              Your Information
-            </Typography>
+          {/* User Information Form */}
+          <Card sx={{ maxWidth: '100%', padding: 4, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 3 }}>
+            <CardContent>
+              <Typography variant="h6" gutterBottom sx={{ textAlign: 'center', fontWeight: 'bold', marginBottom: '24px' }}>
+                Enter Your Information
+              </Typography>
 
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={3}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Full Name"
-                    variant="outlined"
-                    fullWidth
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Full Name"
+                      variant="outlined"
+                      fullWidth
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Email"
+                      variant="outlined"
+                      fullWidth
+                      name="email"
+                      value={formData.email}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Phone Number"
+                      variant="outlined"
+                      fullWidth
+                      name="phoneNumber"
+                      value={formData.phoneNumber}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="Address"
+                      variant="outlined"
+                      fullWidth
+                      name="address"
+                      value={formData.address}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="City"
+                      variant="outlined"
+                      fullWidth
+                      name="city"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      label="State"
+                      variant="outlined"
+                      fullWidth
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Email"
-                    variant="outlined"
-                    fullWidth
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="Phone Number"
-                    variant="outlined"
-                    fullWidth
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
-                </Grid>
-                <Grid item xs={12}>
-                  <TextField
-                    label="Address"
-                    variant="outlined"
-                    fullWidth
-                    name="address"
-                    value={formData.address}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="City"
-                    variant="outlined"
-                    fullWidth
-                    name="city"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    label="State"
-                    variant="outlined"
-                    fullWidth
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    required
-                    sx={{ backgroundColor: '#f7f7f7' }}
-                  />
-                </Grid>
-              </Grid>
 
-              <Box sx={{ mt: 3, textAlign: 'center' }}>
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
-                  sx={{ borderRadius: '30px', padding: '12px 30px', fontWeight: 'bold' }}
+                  fullWidth
+                  sx={{ marginTop: 4 }}
+                  disabled={isSubmitting}
                 >
-                  Submit
+                  {isSubmitting ? 'Submitting...' : 'Submit'}
                 </Button>
-              </Box>
-            </form>
-          </CardContent>
-        </Card>
+              </form>
+            </CardContent>
+          </Card>
+        </Box>
       </Box>
     </GoogleMapsLoader>
   );

@@ -325,7 +325,7 @@ const devices = [
   }
 },
 {
-  Name: "Nickel-Metal Hydride (NiMH) Battery",
+  Name: "Nickel-Metal Battery",
   category: "Batteries",
   image:"https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/icons/battery.png",
   materials: {

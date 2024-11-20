@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
-import { useLocation } from 'react-router-dom'; // Correct import for v6
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Box, Typography, Card, CardContent, Grid, Button } from '@mui/material';
-import devices from '../data/devicesData.js'; // Device data
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import devices from '../data/devicesData.js';
 
 // Material Symbols (using emojis or icons as placeholder)
 const symbols = {
@@ -23,57 +22,66 @@ const CO2ProgressPage = () => {
     }
   }, [quantities]);
 
-  const calculateTotal = () => {
-    let totalWeight = 0;
-    let totalLeadWeight = 0;
-    let totalPlasticWeight = 0;
-    let totalCopperWeight = 0;
-    let totalAluminumWeight = 0;
+  // Function to calculate total material weight
+  const calculateMaterialWeights = () => {
+    let totals = {
+      totalWeight: 0,
+      totalLeadWeight: 0,
+      totalPlasticWeight: 0,
+      totalCopperWeight: 0,
+      totalAluminumWeight: 0,
+    };
 
     devices.forEach((device) => {
       if (device && device.Name && device.materials) {
         const deviceQuantity = quantities[device.Name] || 0;
 
-        // Sum of material weights
-        const materialWeight = (device.materials.lead + device.materials.plastic + device.materials.copper + device.materials.aluminum) * deviceQuantity;
-
-        totalWeight += materialWeight;
-        totalLeadWeight += (device.materials.lead * deviceQuantity);
-        totalPlasticWeight += (device.materials.plastic * deviceQuantity);
-        totalCopperWeight += (device.materials.copper * deviceQuantity);
-        totalAluminumWeight += (device.materials.aluminum * deviceQuantity);
-      } else {
-        console.error(`Device or materials not found for: ${device?.Name}`);
+        // Calculate individual material weights
+        totals.totalWeight += (device.materials.lead + device.materials.plastic + device.materials.copper + device.materials.aluminum) * deviceQuantity;
+        totals.totalLeadWeight += device.materials.lead * deviceQuantity;
+        totals.totalPlasticWeight += device.materials.plastic * deviceQuantity;
+        totals.totalCopperWeight += device.materials.copper * deviceQuantity;
+        totals.totalAluminumWeight += device.materials.aluminum * deviceQuantity;
       }
     });
 
-    return { totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight };
+    return totals;
   };
 
-  const { totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight } = calculateTotal();
-
+  const { totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight } = calculateMaterialWeights();
   const ecoPoints = Math.floor((totalWeight / 1000) * 100);
 
+  // Handle the navigation to find collectors page
   const handleFindCollectors = () => {
+    // Filter the selected devices to only include those with a quantity > 0
     const selectedDevices = Object.entries(quantities)
-    .filter(([deviceName, quantity]) => quantity > 0) // Only include devices with quantities > 0
-    .reduce((acc, [deviceName, quantity]) => {
-      acc[deviceName] = quantity; // Build a new object with selected devices
-      return acc;
-    }, {});
+      .filter(([deviceName, quantity]) => quantity > 0)  // Only include devices with quantities > 0
+      .map(([deviceName]) => deviceName);  // Create an array of device names
+  
+    // Build an object with quantities for each selected device
+    const updatedQuantities = Object.entries(quantities)
+      .filter(([deviceName, quantity]) => quantity > 0)  // Only include devices with quantities > 0
+      .reduce((acc, [deviceName, quantity]) => {
+        acc[deviceName] = quantity;  // Set the quantity for each device
+        return acc;
+      }, {});
+  
+    // Log the results for debugging purposes
+    console.log("Selected Devices:", selectedDevices);
+    console.log("Quantities:", updatedQuantities);
+  
 
-    // Pass quantities and totals to the next page as state
+    // Navigate with quantities and totals as state
     navigate('/E-Points', {
       state: {
-        quantities: selectedDevices,
-        totals: {
-          totalWeight,
-          totalLeadWeight,
-          totalPlasticWeight,
-          totalCopperWeight,
-          totalAluminumWeight,
-          ecoPoints,
-        },
+        selectedDevices,
+        updatedQuantities,
+        totalWeight,
+        totalLeadWeight,
+        totalPlasticWeight,
+        totalCopperWeight,
+        totalAluminumWeight,
+        ecoPoints,
       },
     });
   };
@@ -112,57 +120,24 @@ const CO2ProgressPage = () => {
 
               <Grid container spacing={2} justifyContent="center">
                 {/* Material-specific cards */}
-                {/* Lead */}
-                <Grid item xs={12} md={6} lg={4}>
-                  <Card sx={{ backgroundColor: "#ffeb3b", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">Lead</Typography>
-                    <Card sx={{ backgroundColor: '#333', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
-                      <Typography variant="h4">Pb</Typography>
+                {[
+                  { label: 'Lead', symbol: symbols.pb, total: totalLeadWeight, bgColor: '#ffeb3b', symbolColor: '#333' },
+                  { label: 'Plastic', symbol: symbols.plastic, total: totalPlasticWeight, bgColor: '#c8e6c9', symbolColor: '#4caf50' },
+                  { label: 'Copper', symbol: symbols.cu, total: totalCopperWeight, bgColor: '#ffcc80', symbolColor: '#8b4513' },
+                  { label: 'Aluminum', symbol: symbols.al, total: totalAluminumWeight, bgColor: '#bbdefb', symbolColor: '#1976d2' }
+                ].map(({ label, symbol, total, bgColor, symbolColor }, index) => (
+                  <Grid item xs={12} md={6} lg={4} key={index}>
+                    <Card sx={{ backgroundColor: bgColor, padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
+                      <Typography variant="h5" component="div">{label}</Typography>
+                      <Card sx={{ backgroundColor: symbolColor, padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
+                        <Typography variant="h4">{symbol}</Typography>
+                      </Card>
+                      <Typography variant="body2" color="text.secondary" fontSize="30px">
+                        {total.toFixed(0)} g
+                      </Typography>
                     </Card>
-                    <Typography variant="body2" color="text.secondary" fontSize='30px'>
-                      {totalLeadWeight.toFixed(0)} g
-                    </Typography>
-                  </Card>
-                </Grid>
-
-                {/* Plastic */}
-                <Grid item xs={12} md={6} lg={4}>
-                  <Card sx={{ backgroundColor: "#c8e6c9", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">Plastic</Typography>
-                    <Card sx={{ backgroundColor: '#4caf50', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
-                      <Typography variant="h4">{symbols.plastic}</Typography>
-                    </Card>
-                    <Typography variant="body2" color="text.secondary" fontSize='30px'>
-                      {totalPlasticWeight.toFixed(0)} g
-                    </Typography>
-                  </Card>
-                </Grid>
-
-                {/* Copper */}
-                <Grid item xs={12} md={6} lg={4}>
-                  <Card sx={{ backgroundColor: "#ffcc80", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">Copper</Typography>
-                    <Card sx={{ backgroundColor: '#8b4513', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
-                      <Typography variant="h4">Cu</Typography>
-                    </Card>
-                    <Typography variant="body2" color="text.secondary" fontSize='30px'>
-                      {totalCopperWeight.toFixed(0)} g
-                    </Typography>
-                  </Card>
-                </Grid>
-
-                {/* Aluminum */}
-                <Grid item xs={12} md={6} lg={4}>
-                  <Card sx={{ backgroundColor: "#bbdefb", padding: '20px', borderRadius: '8px', textAlign: 'center' }}>
-                    <Typography variant="h5" component="div">Aluminum</Typography>
-                    <Card sx={{ backgroundColor: '#1976d2', padding: '20px', borderRadius: '8px', color: '#fff', marginTop: '10px' }}>
-                      <Typography variant="h4">Al</Typography>
-                    </Card>
-                    <Typography variant="body2" color="text.primary" fontSize='30px'>
-                      {totalAluminumWeight.toFixed(0)} g
-                    </Typography>
-                  </Card>
-                </Grid>
+                  </Grid>
+                ))}
               </Grid>
 
               <Box sx={{ marginTop: '30px', textAlign: 'center' }}>

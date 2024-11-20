@@ -1,77 +1,171 @@
-import React from 'react';
+import React, { useState, useCallback, memo } from 'react';
+import { Box, Typography, TextField, Button, Card, CardContent } from '@mui/material';
+import { generateClient } from "aws-amplify/data";
 
-// Component: AboutPage
+// Initialize client outside component to prevent recreation
+const client = generateClient();
+
+// Memoized Info Section Component
+const InfoSection = memo(({ title, content }) => (
+  <section style={styles.section}>
+    <h2 style={styles.subHeading}>{title}</h2>
+    <p style={styles.paragraph}>{content}</p>
+  </section>
+));
+
+// Memoized Points Display Component
+const PointsDisplay = memo(({ userPoints }) => (
+  <Box sx={{ marginTop: 4 }}>
+    <Typography variant="body1">
+      <strong>Your Eco Points:</strong> {userPoints.ecoPoints}
+    </Typography>
+  </Box>
+));
+
+// Content Configuration
+const infoSections = [
+  {
+    title: 'What is E-Waste?',
+    content: 'Electronic waste, or e-waste, refers to discarded electronic devices like TVs, computers, smartphones, and household appliances. As technology evolves, older devices become obsolete, leading to an increase in e-waste. Proper recycling of e-waste is crucial to recover valuable materials, minimize environmental harm, and reduce the carbon footprint associated with producing new electronics.'
+  },
+  {
+    title: 'Why Recycle E-Waste?',
+    content: 'Recycling e-waste helps to recover valuable resources like copper, aluminum, and gold, reducing the demand for new mining. It also prevents harmful substances such as lead, mercury, and cadmium from contaminating the environment. Proper recycling supports sustainability by conserving natural resources, reducing pollution, and lowering carbon emissions.'
+  },
+  {
+    title: 'Our Recycling Partners',
+    content: 'We partner with certified e-waste recycling organizations to ensure safe and environmentally-friendly disposal of electronics. These partners adhere to standards like RoHS and WEEE, ensuring that all materials are responsibly recycled and reused.'
+  },
+  {
+    title: 'Join Us in Making a Difference!',
+    content: 'You can make a positive impact by recycling your old electronics responsibly. Reach out to our recycling partners or visit our designated drop-off points to dispose of your unwanted devices safely.'
+  }
+];
+
 const AboutPage = () => {
+  const [searchData, setSearchData] = useState({ email: '', phoneNumber: '' });
+  const [userPoints, setUserPoints] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleInputChange = useCallback((e) => {
+    const { name, value } = e.target;
+    setSearchData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  }, []);
+
+  const handleCheckPoints = useCallback(async () => {
+    if (!searchData.email || !searchData.phoneNumber) {
+      setError('Please fill in both email and phone number.');
+      return;
+    }
+  
+    setIsLoading(true);
+    setError(null);
+    try {
+      // Make the API call with the search parameters (email and phone number)
+      const { data: userData, errors } = await client.models.FormSubmission.get({
+        email: searchData.email,
+        phoneNumber: searchData.phoneNumber
+      });
+  
+      // Check for any errors returned from the API
+      if (errors && errors.length > 0) {
+        setError('Error fetching user data');
+        console.error(errors);  // Log the errors for debugging
+        return;
+      }
+  
+      // If data is found, update the state
+      if (userData) {
+        const { ecoPoints, email, phoneNumber } = userData;
+  
+        setUserPoints({
+          ecoPoints: ecoPoints || 0,  // Default to 0 if undefined
+          email,
+          phoneNumber
+        });
+      } else {
+        // No matching records found
+        setUserPoints(null);
+        setError('No matching records found.');
+      }
+    } catch (err) {
+      // Handle any errors that occur during the API call
+      console.error('Error fetching user data:', err);
+      setError('There was an error retrieving your data.');
+    } finally {
+      setIsLoading(false);
+    }
+  }, [searchData]);
+
   return (
     <div style={styles.pageContainer}>
-      {/* Main content container */}
       <div style={styles.container}>
         <header style={styles.header}>
           <h1 style={styles.heading}>About E-Waste Recycling</h1>
         </header>
 
-        {/* Info Block */}
         <section style={styles.infoBlock}>
           <p style={styles.infoText}>
-            Every year, millions of electrical and electronic devices are discarded as products break or become obsolete. These discarded devices are considered e-waste and can become a threat to health and the environment if they are not disposed of and recycled appropriately.
+            Every year, millions of electrical and electronic devices are discarded as products break or become obsolete. 
+            These discarded devices are considered e-waste and can become a threat to health and the environment if they 
+            are not disposed of and recycled appropriately.
           </p>
         </section>
 
-        <section style={styles.section}>
-          <h2 style={styles.subHeading}>What is E-Waste?</h2>
-          <p style={styles.paragraph}>
-            Electronic waste, or e-waste, refers to discarded electronic devices like TVs, computers, smartphones, and household appliances. As technology evolves, older devices become obsolete, leading to an increase in e-waste. Proper recycling of e-waste is crucial to recover valuable materials, minimize environmental harm, and reduce the carbon footprint associated with producing new electronics.
-          </p>
-        </section>
-        <section style={styles.section}>
-          <h2 style={styles.subHeading}>Why Recycle E-Waste?</h2>
-          <p style={styles.paragraph}>
-            Recycling e-waste helps to recover valuable resources like copper, aluminum, and gold, reducing the demand for new mining. It also prevents harmful substances such as lead, mercury, and cadmium from contaminating the environment. Proper recycling supports sustainability by conserving natural resources, reducing pollution, and lowering carbon emissions.
-          </p>
-        </section>
-        <section style={styles.section}>
-          <h2 style={styles.subHeading}>Our Recycling Partners</h2>
-          <p style={styles.paragraph}>
-            We partner with certified e-waste recycling organizations to ensure safe and environmentally-friendly disposal of electronics. These partners adhere to standards like RoHS and WEEE, ensuring that all materials are responsibly recycled and reused.
-          </p>
-        </section>
-        <section style={styles.section}>
-          <h2 style={styles.subHeading}>Join Us in Making a Difference!</h2>
-          <p style={styles.paragraph}>
-            You can make a positive impact by recycling your old electronics responsibly. Reach out to our recycling partners or visit our designated drop-off points to dispose of your unwanted devices safely.
-          </p>
-        </section>
+        {infoSections.map(section => (
+          <InfoSection 
+            key={section.title}
+            title={section.title}
+            content={section.content}
+          />
+        ))}
+
+        <Card sx={{ padding: 4, marginBottom: 4 }}>
+          <CardContent>
+            <Typography variant="h6" sx={{ marginBottom: 2 }}>
+              Check Your Eco Points
+            </Typography>
+            <TextField
+              label="Email"
+              name="email"
+              value={searchData.email}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+            />
+            <TextField
+              label="Phone Number"
+              name="phoneNumber"
+              value={searchData.phoneNumber}
+              onChange={handleInputChange}
+              fullWidth
+              sx={{ marginBottom: 2 }}
+            />
+            <Button 
+              variant="contained" 
+              color="primary" 
+              onClick={handleCheckPoints}
+              disabled={isLoading}
+            >
+              {isLoading ? 'Checking...' : 'Check Points'}
+            </Button>
+
+            {userPoints && userPoints.ecoPoints !== undefined && (
+              <PointsDisplay userPoints={userPoints} />
+            )}
+
+            {error && (
+              <Typography color="error" sx={{ marginTop: 2 }}>
+                {error}
+              </Typography>
+            )}
+          </CardContent>
+        </Card>
       </div>
-
-      {/* Sidebar for materials and 3 R's */}
-      <aside style={styles.sidebar}>
-        <div style={styles.sidebarSection}>
-          <h3 style={styles.sidebarHeading}>Materials Found in Electronics</h3>
-          <ul style={styles.sidebarList}>
-            <li><strong>Aluminum (Al):</strong> Used in casings, heat sinks, and more.</li>
-            <li><strong>Copper (Cu):</strong> Essential for wiring and internal circuits.</li>
-            <li><strong>Lead (Pb):</strong> Previously used in CRTs, now restricted.</li>
-            <li><strong>Plastic (Pl):</strong> Common in casings, connectors, and cables.</li>
-          </ul>
-        </div>
-        <div style={styles.sidebarSection}>
-          <h3 style={styles.sidebarHeading}>Harmful Materials</h3>
-          <ul style={styles.sidebarList}>
-            <li><strong>Mercury (Hg):</strong> Toxic, found in older devices.</li>
-            <li><strong>Cadmium (Cd):</strong> Carcinogenic, found in batteries.</li>
-            <li><strong>BFRs:</strong> Disruptive to hormones, used in plastics.</li>
-            <li><strong>Arsenic (As):</strong> Toxic, found in older semiconductors.</li>
-          </ul>
-        </div>
-        <div style={styles.sidebarSection}>
-          <h3 style={styles.sidebarHeading}>The 3 R's of Waste Management</h3>
-          <ul style={styles.sidebarList}>
-            <li><strong>Reduce:</strong> Use items with care to minimize waste.</li>
-            <li><strong>Reuse:</strong> Use items or their parts again.</li>
-            <li><strong>Recycle:</strong> Convert waste into reusable material.</li>
-          </ul>
-        </div>
-      </aside>
     </div>
   );
 };
@@ -80,18 +174,15 @@ const AboutPage = () => {
 const styles = {
   pageContainer: {
     display: 'grid',
-    gridTemplateColumns: '6fr 2fr', // Main content 2x the width of sidebar
     gap: '20px',
     padding: '30px 20px',
     fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
     backgroundColor: '#f9f9f9',
   },
   container: {
-    maxWidth: '1300px',
     backgroundColor: '#f9f9f9',
     boxShadow: '0px 4px 20px rgba(0, 0, 0, 0.1)',
     borderRadius: '8px',
-    padding: '20px',
   },
   header: {
     backgroundColor: '#283593',
@@ -134,27 +225,6 @@ const styles = {
     fontSize: '1.3em',
     color: '#555',
     lineHeight: '1.8',
-  },
-  sidebar: {
-    padding: '20px',
-    backgroundColor: '#ffffff',
-    borderRadius: '8px',
-    boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
-    height: 'fit-content',
-  },
-  sidebarSection: {
-    marginBottom: '30px',
-  },
-  sidebarHeading: {
-    color: '#37474F',
-    fontSize: '1.5em',
-    marginBottom: '10px',
-  },
-  sidebarList: {
-    listStyleType: 'disc',
-    paddingLeft: '20px',
-    fontSize: '1.3em',
-    color: '#555',
   },
 };
 

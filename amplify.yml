@@ -5,13 +5,12 @@ backend:
       commands:
         - npm ci --cache .npm --prefer-offline --force
          # Backend build
-      - echo "Starting backend build"
-      - npx exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-      # Move amplify_outputs.json to frontend src directory
-      - mv amplify_outputs.json src/eco-save-calculator/src/amplify_outputs.json
-      # Frontend build
-      - echo "Starting frontend build"
-      - cd src/eco-save-calculator
+        - echo "Starting backend build"
+        - npx exec ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        # Move amplify_outputs.json to frontend src directory
+        - mv amplify_outputs.json src/eco-save-calculator/src/amplify_outputs.json
+         # Frontend build
+        - cd src/eco-save-calculator
       
 frontend:
   phases:

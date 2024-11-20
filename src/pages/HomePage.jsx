@@ -40,7 +40,7 @@ const HomePage = () => {
             <Typography sx={{ color: '#7f8c8d', textAlign: 'center', fontSize: '1.4rem' }}>
               <ul style={{ paddingLeft: '10px', color: '#7f8c8d', margin: '0 auto', maxWidth: '600px' }}>
                 <li>Select the devices you want to recycle</li>
-                <li>Calculate the total weight and CO2 savings</li>
+                <li>Calculate the totalewaste and harmful materials </li>
                 <li>Earn rewards and contribute to a greener planet</li>
               </ul>
             </Typography>
@@ -53,7 +53,7 @@ const HomePage = () => {
         <Typography variant="h4" sx={{ color: '#34495e', fontWeight: 'bold', mb: 3 }}>
           Find all those electronics that you don’t use anymore.
         </Typography>
-        <Card sx={{ maxWidth: 600, margin: '0 auto', backgroundColor: '#7edecd' }}>
+        <Card sx={{ maxWidth: 900, margin: '0 auto', backgroundColor: '#7edecd' }}>
           <CardContent>
             <Typography sx={{ color: '#7f8c8d', fontSize: '1.4rem' }}>
               Collect your old electronics, and start contributing to a cleaner environment today.

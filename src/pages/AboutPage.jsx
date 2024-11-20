@@ -55,13 +55,56 @@ const AboutPage = () => {
       [name]: value,
     }));
   }, []);
+  const sendEmail = async (email, ecoPoints) => {
+    try {
+      const emailSubject = 'E-Waste Eco Points Details';
+      const emailBody = `
+        Dear Eco Saver,
+
+        Congratulations! You have accumulated over 1000 Eco Points! You are now eligible to receive a voucher.
+        Eco Points Earned: ${ecoPoints}
+
+        We will reach out shortly with further details. 
+        Thank you for making a positive impact on the environment!
+
+        Best regards,
+        The E-Waste Collection Team
+      `;
+      
+      // AWS SES parameters
+      const sesParams = {
+        Source: 'support@ewasterecycles.com',  // Replace with your SES verified email
+        Destination: {
+          ToAddresses: [email],
+        },
+        Message: {
+          Subject: {
+            Data: emailSubject,
+          },
+          Body: {
+            Text: {
+              Data: emailBody,
+            },
+          },
+        },
+      };
+
+      // Assuming you have AWS SDK set up with SES
+      const ses = new AWS.SES();
+      await ses.sendEmail(sesParams).promise();
+      console.log('Email sent successfully via SES.');
+
+    } catch (err) {
+      console.error("Error sending email:", err);
+    }
+  };
 
   const handleCheckPoints = useCallback(async () => {
     if (!searchData.email || !searchData.phoneNumber) {
       setError('Please fill in both email and phone number.');
       return;
     }
-  
+
     setIsLoading(true);
     setError(null);
     try {
@@ -70,24 +113,35 @@ const AboutPage = () => {
         email: searchData.email,
         phoneNumber: searchData.phoneNumber
       });
-  
+
       // Check for any errors returned from the API
       if (errors && errors.length > 0) {
         setError('Error fetching user data');
         console.error(errors);  // Log the errors for debugging
         return;
       }
-  
+
       // If data is found, update the state
       if (userData) {
         const { ecoPoints, email, phoneNumber } = userData;
-  
+
         setUserPoints({
           ecoPoints: ecoPoints || 0,  // Default to 0 if undefined
           email,
           phoneNumber
         });
-      } else {
+
+        // Check if eco points are greater than or equal to 1000 and send email
+        if (ecoPoints >= 1000) {
+          await sendEmail(email, ecoPoints);
+
+          // Update ecoPoints to 0 after sending the email
+        await client.models.FormSubmission.update({
+          email,
+          phoneNumber,
+          ecoPoints: 0  // Update ecoPoints to 0
+        })
+      }} else {
         // No matching records found
         setUserPoints(null);
         setError('No matching records found.');

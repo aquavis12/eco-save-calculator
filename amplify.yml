@@ -4,11 +4,12 @@ backend:
     build:
       commands:
         - npm ci --cache .npm --prefer-offline --force
-         # Backend build
+        # Backend build
         - echo "Starting backend build"
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
+        # Ensure amplify_outputs.json is in the right location for your build
+        - cp src/amplify_outputs.json ./
         - cd src
-      
 frontend:
   phases:
     build:

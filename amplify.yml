@@ -7,7 +7,7 @@ backend:
          # Backend build
         - echo "Starting backend build"
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
-        - cd src
+        - cd eco-save-calculator/src/
       
 frontend:
   phases:

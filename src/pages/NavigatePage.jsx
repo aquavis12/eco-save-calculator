@@ -4,17 +4,14 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import GoogleMapsLoader from '../GoogleMapsLoader'; // Import the new loader
 import { generateClient } from "aws-amplify/data";
+import { AWS_CONFIG } from '../config';
 
 
 
 
 const client = generateClient();
 const AWS = require('aws-sdk')
-AWS.config.update({
-  accessKeyId:"AKIASVQKHN2ZHO6R3EHH" ,
-  secretAccessKey: "qjFfKP8qbtpETfpnFCsIDIZuT9bXEqllTcCh3Me4",
-  region: "us-east-2", // Ensure your .env file has AWS_REGION set to 'us-east-2'
-});
+AWS.config.update({AWS_CONFIG});
 
 
 const ses = new AWS.SES();

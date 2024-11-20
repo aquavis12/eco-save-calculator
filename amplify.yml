@@ -21,5 +21,12 @@ frontend:
       - '**/*'
   cache:
     paths:
-      - .npm/**/*
-      - node_modules/**/*
+      - node_modules/**/*  # Cache node_modules for both frontend and backend for faster builds
+      - .npm/**/*  # Cache npm modules for frontend as well
+
+environment:
+  variables:
+    GOOGLE_API_KEY: ${GOOGLE_API_KEY}
+    REACT_APP_AWS_ACCESS_KEY_ID: ${REACT_APP_AWS_ACCESS_KEY_ID}
+    REACT_APP_AWS_REGION: ${REACT_APP_AWS_REGION}
+    REACT_APP_AWS_SECRET_ACCESS_KEY: ${REACT_APP_AWS_SECRET_ACCESS_KEY}

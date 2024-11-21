@@ -5,3 +5,5 @@ export const AWS_CONFIG = {
     region: process.env.REACT_APP_AWS_REGION,
     secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY,
 };
+
+module.exports = config;

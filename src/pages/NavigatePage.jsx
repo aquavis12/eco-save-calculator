@@ -16,10 +16,14 @@ AWS.config.update({
   secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
 });
 
-
+const locations = [
+  { lat: 17.4475, lng: 78.3805, title: 'HiTech City' },
+  { lat: 17.4017, lng: 78.3736, title: 'Manikonda' },
+  { lat: 17.4816, lng: 78.3871, title: 'KPHB' },
+];
 const ses = new AWS.SES();
 const emailSource = 'support@ewasterecycles.com'; 
-const googleMapsLibraries = ['places'];
+const googleMapsLibraries = [locations];
 
 const NavigatePage = () => {
   const [userLocation, setUserLocation] = useState(null);
@@ -47,27 +51,20 @@ const NavigatePage = () => {
   // Get user's geolocation
   useEffect(() => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        const { latitude, longitude } = position.coords;
-        setUserLocation({ lat: latitude, lng: longitude });
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setUserLocation({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error('Error fetching geolocation:', error);
+          // You can set a default location or handle error cases here
+        }
+      );
+    } else {
+      console.error('Geolocation is not supported by this browser.');
     }
   }, []);
-
-  
-    // Example of nearby e-waste collectors (latitude, longitude, and name)
-    useEffect(() => {
-      // Here, you would fetch the data from your API or database
-      const collectors = [
-        { id: 1, name: "Collector 1", lat: 39.9526, lng: -75.1652 },
-        { id: 2, name: "Collector 2", lat: 40.7128, lng: -74.0060 },
-        { id: 3, name: "Collector 3", lat: 34.0522, lng: -118.2437 },
-        // Add more collectors here
-      ];
-      setEWasteCollectors(collectors);
-    }, []);
-  
-  
 
   // Extract props from location state with defaults if state is missing
   const {
@@ -208,7 +205,6 @@ The E-Waste Collection Team
   };
 
   return (
-    <GoogleMapsLoader libraries={googleMapsLibraries}>
 <Box sx={{ padding: 4, backgroundColor: '#f4f6f8', minHeight: '100vh' }}>
 <Box sx={{ }}>
   {/* Conditionally render the entire Selected Quantities and Total Weights section */}
@@ -230,7 +226,7 @@ The E-Waste Collection Team
               .map(([device, quantity]) => (
                 <Grid item xs={12} sm={6} key={device}>
                   <Typography variant="body1">
-                    {device}: {quantity}
+                    {device}:{quantity}
                   </Typography>
                 </Grid>
               ))}
@@ -280,32 +276,15 @@ The E-Waste Collection Team
       </Box>
     </Box>
   )}
-
-       {/* Map Section */}
-       <Box sx={{ marginBottom: 4 }}>
+             <Box sx={{ marginBottom: 4 }}>
           <Typography variant="h5" align="center" sx={{ fontWeight: 'bold', color: '#333' }}>
             Find Nearby E-Waste Collectors
           </Typography>
-          {userLocation && (
-            <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '400px', borderRadius: '8px' }}
-              center={userLocation}
-              zoom={14}
-            >
-              {/* Marker for User's Location */}
-              <Marker position={userLocation} label="You" />
-
-              {/* Markers for E-Waste Collectors */}
-              {eWasteCollectors.map((collector) => (
-                <Marker
-                  key={collector.id}
-                  position={{ lat: collector.lat, lng: collector.lng }}
-                  label={collector.name}
-                />
-              ))}
-            </GoogleMap>
-          )}
         </Box>
+ 
+         {userLocation && (
+          <GoogleMapsLoader libraries={googleMapsLibraries}>      </GoogleMapsLoader>
+          )}
           {/* User Information Form */}
           <Card sx={{ maxWidth: '100%', padding: 4, backgroundColor: '#fff', borderRadius: '8px', boxShadow: 3 }}>
             <CardContent>
@@ -398,7 +377,6 @@ The E-Waste Collection Team
           </Card>
         </Box>
       </Box>
-    </GoogleMapsLoader>
   );
 };
 

@@ -40,14 +40,14 @@ const Header = () => {
             src="https://amplify-eco-images-2024.s3.us-east-2.amazonaws.com/image3.jpg" // Replace with the correct image URL or local path
             alt="Electronics"
             style={{
-              width: isMobile ? '20%' : isTablet ? '25%' : '30%', // Adjust for mobile, tablet, desktop
-              height: 'auto',
+              width: isMobile ? '30%' : isTablet ? '30%' : '30%', // Adjust for mobile, tablet, desktop
+              height: isMobile ? '40px' : isTablet ? '60px' : '70px', // Adjust height for mobile, tablet, desktop
               alignItems: 'center',
               boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
             }}
           />
-          <Typography variant="h5" sx={{ color: 'white', fontWeight: 'bold' }}>
-            E-Waste Recycling
+          <Typography variant="h6" sx={{ color: 'white', fontWeight: 'bold' }}>
+            E-Waste Recycles
           </Typography>
         </Box>
 

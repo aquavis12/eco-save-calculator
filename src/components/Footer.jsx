@@ -44,26 +44,14 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/privacy"
+                  href="/E-points"
                   color="inherit"
                   sx={{
                     '&:hover': { textDecoration: 'underline', color: '#34495e' },
                     transition: 'color 0.3s ease',
                   }}
                 >
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/terms"
-                  color="inherit"
-                  sx={{
-                    '&:hover': { textDecoration: 'underline', color: '#34495e' },
-                    transition: 'color 0.3s ease',
-                  }}
-                >
-                  Terms of Service
+                  E-Points
                 </Link>
               </li>
             </ul>
@@ -75,7 +63,7 @@ const Footer = () => {
               Contact
             </Typography>
             <Typography sx={{ lineHeight: 1.8, color: '#f0f0f0' }}>
-              Email: support@erecycle.com
+              Email: support@erecycles.com
             </Typography>
             <Typography sx={{ lineHeight: 1.8, color: '#f0f0f0' }}>
               Phone: +91 8688108092

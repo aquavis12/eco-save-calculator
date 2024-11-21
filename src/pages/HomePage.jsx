@@ -23,7 +23,7 @@ const HomePage = () => {
           paragraph
           sx={{
             color: '#24c5ae',
-            fontSize: { xs: '1.2rem', sm: '1.4rem', md: '1.6rem' },
+            fontSize: { xs: '1.2rem', sm: '1.6rem', md: '1.6rem' },
           }}
         >
           Recycle your old electronics, save the environment, and earn rewards!
@@ -37,8 +37,8 @@ const HomePage = () => {
         </Typography>
         <Card sx={{ maxWidth: 600, margin: '0 auto', backgroundColor: '#7edecd' }}>
           <CardContent>
-            <Typography sx={{ color: '#7f8c8d', textAlign: 'center', fontSize: '1.4rem' }}>
-              <ul style={{ paddingLeft: '10px', color: '#7f8c8d', margin: '0 auto', maxWidth: '600px' }}>
+            <Typography sx={{ color: '#7f8c8d', fontSize: '1.4rem' }}>
+              <ul style={{ paddingLeft: '10px', color: '#7f8c8d', maxWidth: '600px',margin: '0 auto' }}>
                 <li>Select the devices you want to recycle</li>
                 <li>Calculate the totalewaste and harmful materials </li>
                 <li>Earn rewards and contribute to a greener planet</li>

@@ -4,14 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { GoogleMap, Marker } from '@react-google-maps/api';
 import GoogleMapsLoader from '../GoogleMapsLoader'; // Import the new loader
 import { generateClient } from "aws-amplify/data";
-import { AWS_CONFIG } from '../config';
-
-
 
 
 const client = generateClient();
-const AWS = require('aws-sdk')
-AWS.config.update({AWS_CONFIG});
+const AWS = require('aws-sdk');
+
+// Update AWS SDK configuration
+AWS.config.update({
+  accessKeyId: process.env.REACT_APP_AWS_ACCESS_KEY_ID,
+  region: process.env.REACT_APP_AWS_REGION,
+  secretAccessKey: process.env.REACT_APP_AWS_SECRET_ACCESS_KEY
+});
 
 
 const ses = new AWS.SES();
@@ -91,7 +94,6 @@ const NavigatePage = () => {
         totalAluminumWeight,
       });
     }
-    console.log('Eco Points:', ecoPoints);
   }, [updatedQuantities, selectedDevices, totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight, ecoPoints]);
 
   const handleInputChange = (e) => {
@@ -132,6 +134,12 @@ const NavigatePage = () => {
       
           console.log('Form data updated with new ecoPoints:', updatedEcoPoints);
           alert('Your details have been updated successfully.');}
+
+          // Conditional check for selectedDevices and updatedQuantities
+    if (!(selectedDevices && Object.values(updatedQuantities).some((quantity) => quantity > 0))) {
+      console.log('No valid devices or quantities selected, skipping email...');
+      return; // Prevent sending the email if no devices or quantities are selected
+    }
       else {
       // Create a new form submission
       await client.models.FormSubmission.create({

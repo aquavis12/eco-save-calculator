@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "REACT_APP_AWS_ACCESS_KEY_ID=$REACT_APP_AWS_ACCESS_KEY_ID REACT_APP_AWS_SECRET_ACCESS_KEY=$REACT_APP_AWS_SECRET_ACCESS_KEY REACT_APP_AWS_REGION=$REACT_APP_AWS_REGION GOOGLE_API_KEY=$GOOGLE_API_KEY react-scripts build && mv build dist",
+    "build": "REACT_APP_AWS_ACCESS_KEY_ID=$REACT_APP_AWS_ACCESS_KEY_ID REACT_APP_AWS_SECRET_ACCESS_KEY=$REACT_APP_AWS_SECRET_ACCESS_KEY REACT_APP_AWS_REGION=$REACT_APP_AWS_REGION REACT_APP_GOOGLE_API_KEY=$REACT_APP_GOOGLE_API_KEY react-scripts build && mv build dist",
     "start": "react-scripts start"
   },
   "repository": {

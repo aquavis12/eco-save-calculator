@@ -8,12 +8,17 @@ backend:
         - echo "Starting backend build"
         - npx ampx pipeline-deploy --branch $AWS_BRANCH --app-id $AWS_APP_ID
         # Ensure amplify_outputs.json is in the right location for your build
-        - cp src/amplify_outputs.json ./
+        - cp src/amplify_outputs.json ./  # Adjust the path if needed
         - cd src
 frontend:
   phases:
     build:
       commands:
+        # Set AWS environment variables during the build
+        - export REACT_APP_AWS_ACCESS_KEY_ID=$REACT_APP_AWS_ACCESS_KEY_ID
+        - export REACT_APP_AWS_SECRET_ACCESS_KEY=$REACT_APP_AWS_SECRET_ACCESS_KEY
+        - export REACT_APP_AWS_REGION=$REACT_APP_AWS_REGION
+        # Run the build command
         - npm run build
   artifacts:
     baseDirectory: dist
@@ -21,8 +26,8 @@ frontend:
       - '**/*'
   cache:
     paths:
-      - node_modules/**/*  # Cache node_modules for both frontend and backend for faster builds
-      - .npm/**/*  # Cache npm modules for frontend as well
+      - node_modules/**/*  # Cache node_modules for faster builds
+      - .npm/**/*  # Cache npm modules for faster builds
 
 environment:
   variables:

@@ -101,12 +101,40 @@ const NavigatePage = () => {
     });
   };
 
+    // Validate the form fields
+    const validateForm = () => {
+      const { name, email, phoneNumber, address, city, state, selectedDevices, updatedQuantities,  totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight, ecoPoints } = formData;
+  
+      if (!name || !email || !phoneNumber || !address || !city || !state) {
+        alert('Please fill out all the required fields.');
+        return false;
+      }
+  
+      if (!selectedDevices || updatedQuantities <= 0 ) {
+        alert('Please provide valid e-waste details.');
+        return false;
+      }
+  
+      // Additional e-waste validation if needed (for example, checking for positive values)
+      if (totalWeight <= 0 ) {
+        alert('Please ensure the e-waste weight .');
+        return false;
+      }
+  
+      return true;
+    };
+
+
   const quantities = Object.entries(updatedQuantities).map(([device, quantity]) => ({
     device,
     quantity,
   }));
   const handleSubmit = async (e) => {
     e.preventDefault();
+     // Validate before submitting
+     if (!validateForm()) {
+      return;
+    }
     setIsSubmitting(true);
     console.log('Form data submitted:', formData);
   
@@ -131,6 +159,7 @@ const NavigatePage = () => {
       
           console.log('Form data updated with new ecoPoints:', updatedEcoPoints);
           alert('Your details have been updated successfully.');}
+          navigate('/thanks');
 
           // Conditional check for selectedDevices and updatedQuantities
     if (!(selectedDevices && Object.values(updatedQuantities).some((quantity) => quantity > 0))) {
@@ -152,6 +181,8 @@ const NavigatePage = () => {
   
       console.log('Form data saved:', { formData });
       alert('Your details have been submitted successfully.');
+      // Navigate to the Thanks page after a successful creation
+      navigate('/thanks');
     }
      // Send email via SNS
      const emailSubject = 'E-Waste Submission Details';
@@ -197,10 +228,11 @@ The E-Waste Collection Team
     console.log('Email sent successfully via SES.')
 
     } catch (error) {
-      console.error('Error saving data:', error);
+      console.error('Error in saving data:', error);
       alert('There was an error submitting your form.');
     } finally {
       setIsSubmitting(false);
+      alert('An error occurred while submitting the form. Please try again');
     }
   };
 

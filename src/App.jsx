@@ -9,7 +9,7 @@ import CO2ProgressPage from './pages/CO2ProgressPage.jsx';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import devices from './data/devicesData.js';
-
+import ThanksPage from './pages/Thankspage';
 
 const App = () => {
   const [quantities, setQuantities] = useState(
@@ -40,6 +40,7 @@ const App = () => {
             element={<CO2ProgressPage quantities={quantities} />}
           />
           <Route path="/E-Points" element={<NavigatePage />}/>
+          <Route path="/thanks" element={<ThanksPage />} />
         </Routes>
       </Container>
       <Footer />

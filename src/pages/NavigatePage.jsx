@@ -109,12 +109,6 @@ const NavigatePage = () => {
         alert('Please fill out all the required fields.');
         return false;
       }
-  
-      if (!selectedDevices || updatedQuantities <= 0 ) {
-        alert('Please provide valid e-waste details.');
-        return false;
-      }
-  
       // Additional e-waste validation if needed (for example, checking for positive values)
       if (totalWeight <= 0 ) {
         alert('Please ensure the e-waste weight .');

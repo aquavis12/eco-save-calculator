@@ -36,7 +36,7 @@ const NavigatePage = () => {
     state: '',
     selectedDevices: '', // Default to empty object
     updatedQuantities:0,
-    totalWeight: 0,
+    totalWeight: '',
     totalLeadWeight: 0,
     totalPlasticWeight: 0,
     totalCopperWeight: 0,
@@ -101,34 +101,15 @@ const NavigatePage = () => {
     });
   };
 
-    // Validate the form fields
-    const validateForm = () => {
-      const { name, email, phoneNumber, address, city, state, selectedDevices, updatedQuantities,  totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight, ecoPoints } = formData;
-  
-      if (!name || !email || !phoneNumber || !address || !city || !state) {
-        alert('Please fill out all the required fields.');
-        return false;
-      }
-      // Additional e-waste validation if needed (for example, checking for positive values)
-      if (totalWeight <= 0 ) {
-        alert('Please ensure the e-waste weight .');
-        return false;
-      }
-  
-      return true;
-    };
-
-
+  const hasEwasteDetails = Object.values(updatedQuantities).some((quantity) => quantity > 0);
   const quantities = Object.entries(updatedQuantities).map(([device, quantity]) => ({
     device,
     quantity,
   }));
+
   const handleSubmit = async (e) => {
     e.preventDefault();
      // Validate before submitting
-     if (!validateForm()) {
-      return;
-    }
     setIsSubmitting(true);
     console.log('Form data submitted:', formData);
   
@@ -226,7 +207,6 @@ The E-Waste Collection Team
       alert('There was an error submitting your form.');
     } finally {
       setIsSubmitting(false);
-      alert('An error occurred while submitting the form. Please try again');
     }
   };
 
@@ -394,7 +374,7 @@ The E-Waste Collection Team
                   color="primary"
                   fullWidth
                   sx={{ marginTop: 4 }}
-                  disabled={isSubmitting}
+                  disabled={!hasEwasteDetails || isSubmitting} // Disable button if no e-waste details or if submitting
                 >
                   {isSubmitting ? 'Submitting...' : 'Submit'}
                 </Button>

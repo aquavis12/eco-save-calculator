@@ -37,14 +37,15 @@ const HomePage = () => {
         </Typography>
         <Card sx={{ maxWidth: 600, margin: '0 auto', backgroundColor: '#7edecd' }}>
           <CardContent>
-            <Typography sx={{ color: '#7f8c8d', fontSize: '1.4rem' }}>
-              <ul style={{ paddingLeft: '10px', color: '#7f8c8d', maxWidth: '600px',margin: '0 auto' }}>
-                <li>Select the devices you want to recycle</li>
-                <li>Calculate the totalewaste and harmful materials </li>
-                <li>Earn rewards and contribute to a greener planet</li>
-              </ul>
-            </Typography>
-          </CardContent>
+  <Typography sx={{ color: '#7f8c8d', fontSize: '1.4rem' }}>
+  </Typography>
+  <ul style={{ paddingLeft: '10px', color: '#7f8c8d', maxWidth: '600px', margin: '0 auto' }}>
+    <li>Select the devices you want to recycle</li>
+    <li>Calculate the total ewaste and harmful materials</li>
+    <li>Earn rewards and contribute to a greener planet</li>
+  </ul>
+</CardContent>
+
         </Card>
       </Box>
 

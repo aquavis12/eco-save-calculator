@@ -8,6 +8,13 @@ This project is an **E-Waste Calculator** built using [Create React App](https:/
 -The E-Waste Calculator leverages React for dynamic user interfaces and Material UI Icons for a modern design. It features a Slider component to input data and uses AWS Amplify Gen2.
 -Collect your old electronics, and start contributing to a cleaner environment today.
 -Recycle your old electronics, save the environment, and earn rewards!
+-Application uses two database tables one to store user details with ecopoints and one store ewaste details.(updated ecopoints will be stored in user details table.individual ecopoints for every submit will be stored in e-waste table. )
+-Once you checked your ecoPoints in about page and its 1000 eocpoints  , the updatedecopoints will be to set 0 & mail will triggered .but still your ecopoints history will be there in E-waste table. Once e-waste partner issues  voucher and then we will delete the data of those history.
+-Submit button in Form page will in disabled mode till if there is any e-waste details needed to submitted then it will be enabled 
+-After successful submission , you will get e-mail triggered automatically. 
+-In user details table , we dont maintain duplicate data , if same user submits again then  only  ecopints will be updated . We maintain record of individual submits in e-waste table.
+-Future enhacements:  After partnering with e-waste partner.we can update more markers in google maps for more visibility and distribute vouchers based on ecopoints (must be >=1000)
+
 ## Available Scripts
 
 In the project directory, you can run:
@@ -65,6 +72,7 @@ npm install @react-google-maps/api
 npm install source-map-loader --save-dev
 npm install react-scripts --save-dev
 npm install @babel/plugin-proposal-private-property-in-object --save-dev
+npm install dotenv
 
 # Web Vitals for performance monitoring
 npm install web-vitals --save
@@ -77,7 +85,13 @@ npm install aws-sdk
 
 # Create the latest AWS Amplify project
 npm create amplify@latest
+
+#After the project setup run below command for sandbox
+npm ampx sandbox 
+
+
 ```
+
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).

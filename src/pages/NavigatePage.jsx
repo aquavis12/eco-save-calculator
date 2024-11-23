@@ -93,6 +93,12 @@ const NavigatePage = () => {
     }
   }, [updatedQuantities, selectedDevices, totalWeight, totalLeadWeight, totalPlasticWeight, totalCopperWeight, totalAluminumWeight, ecoPoints]);
 
+   // Validation for phone number to be exactly 10 digits (0-9)
+   const validatePhoneNumber = (number) => {
+    const phoneRegex = /^[0-9]{10}$/;
+    return phoneRegex.test(number);
+  };
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -109,6 +115,12 @@ const NavigatePage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+     // Final validation before submission
+     if (!validatePhoneNumber(formData.phoneNumber)) {
+      setPhoneError('Phone number must be exactly 10 digits (0-9).');
+      return; // Stop form submission if the phone number is invalid
+    }
      // Validate before submitting
     setIsSubmitting(true);
     console.log('Form data submitted:', formData);
@@ -131,6 +143,20 @@ const NavigatePage = () => {
             ecoPoints: updatedEcoPoints,
             timestamp: new Date().toISOString(),
           });
+
+          await client.models.EwasteData.create({
+            email: formData.email,
+            phoneNumber: formData.phoneNumber,
+            ecoPoints: ecoPoints,
+            selectedDevices,
+            updatedQuantities,
+            totalWeight,
+            totalLeadWeight,
+            totalPlasticWeight,
+            totalCopperWeight,
+            totalAluminumWeight,
+            timestamp: new Date().toISOString(),
+          });  
       
           console.log('Form data updated with new ecoPoints:', updatedEcoPoints);
           alert('Your details have been updated successfully.');}
@@ -153,12 +179,25 @@ const NavigatePage = () => {
         ecoPoints: ecoPoints, // Ensure this is the correct field name in the schema
         timestamp: new Date().toISOString(),
       });
-  
+        // Create a new device data entry
+     await client.models.EwasteData.create({
+    email: formData.email,
+    phoneNumber: formData.phoneNumber,
+    ecoPoints: ecoPoints,
+    selectedDevices,
+    updatedQuantities,
+    totalWeight,
+    totalLeadWeight,
+    totalPlasticWeight,
+    totalCopperWeight,
+    totalAluminumWeight,
+    timestamp: new Date().toISOString(),
+  });  
       console.log('Form data saved:', { formData });
       alert('Your details have been submitted successfully.');
-      // Navigate to the Thanks page after a successful creation
-      navigate('/thanks');
-    }
+  navigate('/thanks');
+};
+
      // Send email via SNS
      const emailSubject = 'E-Waste Submission Details';
      const emailBody = `

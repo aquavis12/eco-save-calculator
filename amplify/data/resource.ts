@@ -1,4 +1,4 @@
-import { type ClientSchema, a, defineData ,defineFunction } from '@aws-amplify/backend';
+import { type ClientSchema, a, defineData } from '@aws-amplify/backend';
 
 
 const schema = a.schema({
@@ -14,6 +14,23 @@ const schema = a.schema({
       timestamp: a.datetime(),  // ISO 8601 formatted timestamp
     }).identifier(['email','phoneNumber'])
       .authorization(allow => [allow.publicApiKey()]),  // Public API key access
+
+
+EwasteData: a
+.model({
+  email: a.email().required(),
+  phoneNumber:a.string(), // This will act as the partition key
+  selectedDevices: a.string(), // Stores selected devices as a comma-separated string
+  updatedQuantities: a.string(),
+  ecoPoints:a.integer(),
+  totalWeight: a.float().default(0),  // Defaults to 0 if not provided
+  totalLeadWeight: a.float().default(0),  // Defaults to 0 if not provided
+  totalPlasticWeight: a.float().default(0),  // Defaults to 0 if not provided
+  totalCopperWeight: a.float().default(0),  // Defaults to 0 if not provided
+  totalAluminumWeight: a.float().default(0),  // Defaults to 0 if not provided
+  timestamp: a.datetime(), 
+}).identifier(['email'])
+    .authorization(allow => [allow.publicApiKey()]),  // Public API key access
 });
 
 export type Schema = ClientSchema<typeof schema>;

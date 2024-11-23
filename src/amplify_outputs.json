@@ -1,8 +1,8 @@
 {
   "data": {
-    "url": "https://jw6qmfgu6ncaxhdnhdmkdmsqs4.appsync-api.us-east-2.amazonaws.com/graphql",
+    "url": "https://gpkdenuhpjdjbh4lewkum6wcja.appsync-api.us-east-2.amazonaws.com/graphql",
     "aws_region": "us-east-2",
-    "api_key": "da2-kmisxc6y4fbfhcxjkdlk7hrbnq",
+    "api_key": "da2-jwqxhwfuerc4hnuxhlzyvizouq",
     "default_authorization_type": "API_KEY",
     "authorization_types": [
       "AWS_IAM"
@@ -126,6 +126,142 @@
             "sortKeyFieldNames": [
               "phoneNumber"
             ]
+          }
+        },
+        "EwasteData": {
+          "name": "EwasteData",
+          "fields": {
+            "email": {
+              "name": "email",
+              "isArray": false,
+              "type": "AWSEmail",
+              "isRequired": true,
+              "attributes": []
+            },
+            "phoneNumber": {
+              "name": "phoneNumber",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "selectedDevices": {
+              "name": "selectedDevices",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "updatedQuantities": {
+              "name": "updatedQuantities",
+              "isArray": false,
+              "type": "String",
+              "isRequired": false,
+              "attributes": []
+            },
+            "ecoPoints": {
+              "name": "ecoPoints",
+              "isArray": false,
+              "type": "Int",
+              "isRequired": false,
+              "attributes": []
+            },
+            "totalWeight": {
+              "name": "totalWeight",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "totalLeadWeight": {
+              "name": "totalLeadWeight",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "totalPlasticWeight": {
+              "name": "totalPlasticWeight",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "totalCopperWeight": {
+              "name": "totalCopperWeight",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "totalAluminumWeight": {
+              "name": "totalAluminumWeight",
+              "isArray": false,
+              "type": "Float",
+              "isRequired": false,
+              "attributes": []
+            },
+            "timestamp": {
+              "name": "timestamp",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": []
+            },
+            "createdAt": {
+              "name": "createdAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            },
+            "updatedAt": {
+              "name": "updatedAt",
+              "isArray": false,
+              "type": "AWSDateTime",
+              "isRequired": false,
+              "attributes": [],
+              "isReadOnly": true
+            }
+          },
+          "syncable": true,
+          "pluralName": "EwasteData",
+          "attributes": [
+            {
+              "type": "model",
+              "properties": {}
+            },
+            {
+              "type": "key",
+              "properties": {
+                "fields": [
+                  "email"
+                ]
+              }
+            },
+            {
+              "type": "auth",
+              "properties": {
+                "rules": [
+                  {
+                    "allow": "public",
+                    "provider": "apiKey",
+                    "operations": [
+                      "create",
+                      "update",
+                      "delete",
+                      "read"
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "primaryKeyInfo": {
+            "isCustomPrimaryKey": true,
+            "primaryKeyFieldName": "email",
+            "sortKeyFieldNames": []
           }
         }
       },

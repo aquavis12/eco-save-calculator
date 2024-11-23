@@ -131,6 +131,13 @@
         "EwasteData": {
           "name": "EwasteData",
           "fields": {
+            "id": {
+              "name": "id",
+              "isArray": false,
+              "type": "ID",
+              "isRequired": true,
+              "attributes": []
+            },
             "email": {
               "name": "email",
               "isArray": false,
@@ -233,14 +240,6 @@
               "properties": {}
             },
             {
-              "type": "key",
-              "properties": {
-                "fields": [
-                  "email"
-                ]
-              }
-            },
-            {
               "type": "auth",
               "properties": {
                 "rules": [
@@ -259,8 +258,8 @@
             }
           ],
           "primaryKeyInfo": {
-            "isCustomPrimaryKey": true,
-            "primaryKeyFieldName": "email",
+            "isCustomPrimaryKey": false,
+            "primaryKeyFieldName": "id",
             "sortKeyFieldNames": []
           }
         }

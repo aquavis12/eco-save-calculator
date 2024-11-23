@@ -29,7 +29,7 @@ EwasteData: a
   totalCopperWeight: a.float().default(0),  // Defaults to 0 if not provided
   totalAluminumWeight: a.float().default(0),  // Defaults to 0 if not provided
   timestamp: a.datetime(), 
-}).identifier(['email'])
+})
     .authorization(allow => [allow.publicApiKey()]),  // Public API key access
 });
 

@@ -143,20 +143,6 @@ const NavigatePage = () => {
             ecoPoints: updatedEcoPoints,
             timestamp: new Date().toISOString(),
           });
-
-          await client.models.EwasteData.create({
-            email: formData.email,
-            phoneNumber: formData.phoneNumber,
-            ecoPoints: ecoPoints,
-            selectedDevices,
-            updatedQuantities,
-            totalWeight,
-            totalLeadWeight,
-            totalPlasticWeight,
-            totalCopperWeight,
-            totalAluminumWeight,
-            timestamp: new Date().toISOString(),
-          });  
       
           console.log('Form data updated with new ecoPoints:', updatedEcoPoints);
           alert('Your details have been updated successfully.');}

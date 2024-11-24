@@ -9,7 +9,7 @@ This project is an **E-Waste Calculator** built using [Create React App](https:/
 - Collect your old electronics, and start contributing to a cleaner environment today.
 - Recycle your old electronics, save the environment, and earn rewards!
 - Application uses two database tables one to store user details with ecopoints and one store ewaste details.(updated ecopoints will be stored in user details table.individual ecopoints for every submit will be stored in e-waste table. )
-- Once you checked your ecoPoints in about page and its 1000 eocpoints  , the updatedecopoints will be to set 0 & mail will triggered .but still your ecopoints history will be there in E-waste table. Once e-waste partner issues  voucher and then we will delete the data of those history.
+- Once you checked your ecoPoints in about page and if its  >= 1000 ecopoints  , the updated ecopoints will be to set 0(In user Details Table) & mail will triggered .but still your ecopoints history will be there in E-waste table. Once e-waste partner issues  voucher and then we will delete the data of those history.
 - Submit button in Form page will in disabled mode till if there is any e-waste details needed to submitted then it will be enabled 
 - After successful submission , you will get e-mail triggered automatically. 
 - In user details table , we dont maintain duplicate data , if same user submits again then  only  ecopints will be updated . We maintain record of individual submits in e-waste table.
@@ -38,8 +38,7 @@ Your app is ready to be deployed!
 ## Technologies Used
 
 - **React**: Front-end library for building the user interface.
-- **Material UI Icons**: Provides a rich set of icons to enhance the UI.
-- **Slider**: A UI component for smooth input controls.
+- **Material UI**: Provides a rich set of enhance the UI.
 - **AWS Amplify Gen2**: Used for backend services,API management
 - **AWS SES & Route53** : for email notifications and domain registry
 - **React Slick**: Used for creating sliders or carousels.
@@ -47,7 +46,7 @@ Your app is ready to be deployed!
 
 ## Installation
 
-To set up the project, you need to install the following packages:
+To set up the project, you need to install the following packages(Use --force if any dependecy issues comes up):
 
 ```bash
 # Material UI and related dependencies
@@ -84,11 +83,10 @@ npm install typescript@4.9.5 --save-dev
 npm install aws-sdk
 
 # Create the latest AWS Amplify project
-npm create amplify@latest
+npm create amplify@latest --force
 
 #After the project setup run below command for sandbox
 npm ampx sandbox 
-
 
 ```
 
